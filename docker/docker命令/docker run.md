@@ -25,7 +25,7 @@ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 - -t: 为容器重新分配一个伪输入终端，通常与 -i 同时使用
 - --dns 8.8.8.8: 指定容器使用的 DNS 服务器，默认和宿主一致
 
-## example
+## Example
 
 使用 docker 镜像 nginx:latest 以后台模式启动一个容器,并将容器命名为 mynginx:
 

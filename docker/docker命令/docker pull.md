@@ -13,7 +13,7 @@ docker pull [OPTIONS] NAME[:TAG|@DIGEST]
 - -a: 拉取所有 tagged 镜像
 - --disable-content-trust: 忽略镜像的校验,默认开启
 
-## example
+## Example
 
 从 Docker Hub 下载最新版 nginx 镜像：
 

@@ -10,7 +10,7 @@ docker create [OPTIONS] IMAGE [COMMAND] [ARG...]
 
 ## OPTIONS 配置
 
-options 用法同[docker run](./docker run.md)
+options 用法同[docker run](./run.md)
 
 ## 实例
 

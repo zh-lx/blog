@@ -210,7 +210,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 ARG <参数名>[=<默认值>]
 ```
 
-## VOLUME
+### VOLUME
 
 定义匿名数据卷。在启动容器时忘记挂载数据卷，会自动挂载到匿名卷。
 
@@ -226,7 +226,7 @@ VOLUME <路径>
 在启动容器 docker run 的时候，我们可以通过 -v 参数修改挂载点。
 ```
 
-## EXPOSE
+### EXPOSE
 
 开放端口
 
@@ -241,7 +241,7 @@ VOLUME <路径>
 EXPOSE <端口1> [<端口2>...]
 ```
 
-## WORKDIR
+### WORKDIR
 
 指定工作目录。用 WORKDIR 指定的工作目录，会在构建镜像的每一层中都存在。（WORKDIR 指定的工作目录，必须是提前创建好的）。
 
@@ -253,7 +253,7 @@ docker build 构建镜像过程中的，每一个 RUN 命令都是新建的一�
 WORKDIR <工作目录路径>
 ```
 
-## USER
+### USER
 
 用于指定执行后续命令的用户和用户组，这边只是切换后续命令执行的用户（用户和用户组必须提前已经存在）。
 
@@ -263,7 +263,7 @@ WORKDIR <工作目录路径>
 USER <用户名>[:<用户组>]
 ```
 
-## HEALTHCHECK
+### HEALTHCHECK
 
 用于指定某个程序或者指令来监控 docker 容器服务的运行状态。
 
@@ -276,7 +276,7 @@ HEALTHCHECK NONE：如果基础镜像有健康检查指令，使用这行可以�
 HEALTHCHECK [选项] CMD <命令> : 这边 CMD 后面跟随的命令使用，可以参考 CMD 的用法。
 ```
 
-## ONBUILD
+### ONBUILD
 
 用于延迟构建命令的执行。简单的说，就是 Dockerfile 里用 ONBUILD 指定的命令，在本次构建镜像的过程中不会执行（假设镜像为 test-build）。当有新的 Dockerfile 使用了之前构建的镜像 FROM test-build ，这是执行新镜像的 Dockerfile 构建时候，会执行 test-build 的 Dockerfile 里的 ONBUILD 指定的命令。
 

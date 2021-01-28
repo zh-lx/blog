@@ -75,7 +75,7 @@ RUN yum install wget \
 
 复制指令，从上下文目录中复制文件或者目录到容器里指定路径
 
-<b>语法：</b>
+语法：
 
 ```dockerfile
 COPY [--chown=<user>:<group>] <源路径1>...  <目标路径>
@@ -86,7 +86,7 @@ COPY [--chown=<user>:<group>] ["<源路径1>",...  "<目标路径>"]
 - <源路径>：源文件或者源目录，这里可以是通配符表达式，其通配符规则要满足 Go 的 filepath.Match 规则。
 - <目标路径>：容器内的指定路径，该路径不用事先建好，路径不存在的话，会自动创建
 
-<b>Example:</b>
+Example:
 
 ```
 COPY /data/hom.txt /mydir/
@@ -106,13 +106,13 @@ ADD 指令和 COPY 的使用格式一致（同样需求下，官方推荐使用 
 - CMD 在 docker run 时运行。
 - RUN 是在 docker build。
 
-<b>作用：</b>
+作用：
 
 为启动的容器指定默认要运行的程序，程序运行结束，容器也就结束。CMD 指令指定的程序可被 docker run 命令行参数中指定要运行的程序所覆盖。
 
 注意：如果 Dockerfile 中如果存在多个 CMD 指令，仅最后一个生效。
 
-<b>语法：</b>
+语法：
 
 ```dockerfile
 CMD <shell 命令>
@@ -129,11 +129,11 @@ CMD  ["node", "app.js"]
 
 但是, 如果运行 docker run 时使用了 --entrypoint 选项，此选项的参数可当作要运行的程序覆盖 ENTRYPOINT 指令指定的程序。
 
-<b>优点：</b>在执行 docker run 的时候可以指定 ENTRYPOINT 运行所需的参数。
+优点：在执行 docker run 的时候可以指定 ENTRYPOINT 运行所需的参数。
 
-<b>注意：</b>如果 Dockerfile 中如果存在多个 ENTRYPOINT 指令，仅最后一个生效。
+注意：如果 Dockerfile 中如果存在多个 ENTRYPOINT 指令，仅最后一个生效。
 
-<b>语法：</b>
+语法：
 
 ```dockerfile
 ENTRYPOINT ["<executeable>","<param1>","<param2>",...]
@@ -141,7 +141,7 @@ ENTRYPOINT ["<executeable>","<param1>","<param2>",...]
 
 可以搭配 CMD 命令使用：一般是变参才会使用 CMD ，这里的 CMD 等于是在给 ENTRYPOINT 传参，以下示例会提到。
 
-<b>Example：</b>
+Example：
 
 假设已通过 Dockerfile 构建了 nginx:test 镜像：
 
@@ -180,14 +180,14 @@ nginx -c /etc/nginx/new.conf
 
 设置环境变量，定义了环境变量，那么在后续的指令中，就可以使用这个环境变量。
 
-<b>语法：</b>
+语法：
 
 ```dockerfile
 ENV <key> <value>
 ENV <key1>=<value1> <key2>=<value2>...
 ```
 
-<b>Example:</b>
+Example:
 
 设置 NODE_VERSION = 7.2.0 ， 在后续的指令中可以通过 $NODE_VERSION 引用：
 
@@ -204,7 +204,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 
 构建命令 docker build 中可以用 --build-arg <参数名>=<值> 来覆盖。
 
-<b>语法：</b>
+语法：
 
 ```dockerfile
 ARG <参数名>[=<默认值>]
@@ -214,11 +214,11 @@ ARG <参数名>[=<默认值>]
 
 定义匿名数据卷。在启动容器时忘记挂载数据卷，会自动挂载到匿名卷。
 
-<b>作用：</b>
+作用：
 
 避免重要的数据，因容器重启而丢失，这是非常致命的。避免容器不断变大。
 
-<b>语法：</b>
+语法：
 
 ```dockerfile
 VOLUME ["<路径1>", "<路径2>"...]
@@ -230,12 +230,12 @@ VOLUME <路径>
 
 开放端口
 
-<b>作用：</b>
+作用：
 
 帮助镜像使用者理解这个镜像服务的守护端口，以方便配置映射。
 在运行时使用随机端口映射时，也就是 docker run -P 时，会自动随机映射 EXPOSE 的端口。
 
-<b>语法：</b>
+语法：
 
 ```dockerfile
 EXPOSE <端口1> [<端口2>...]
@@ -247,7 +247,7 @@ EXPOSE <端口1> [<端口2>...]
 
 docker build 构建镜像过程中的，每一个 RUN 命令都是新建的一层。只有通过 WORKDIR 创建的目录才会一直存在。
 
-<b>语法：</b>
+语法：
 
 ```dockerfile
 WORKDIR <工作目录路径>
@@ -257,7 +257,7 @@ WORKDIR <工作目录路径>
 
 用于指定执行后续命令的用户和用户组，这边只是切换后续命令执行的用户（用户和用户组必须提前已经存在）。
 
-<b>语法：</b>
+语法：
 
 ```dockerfile
 USER <用户名>[:<用户组>]
@@ -267,7 +267,7 @@ USER <用户名>[:<用户组>]
 
 用于指定某个程序或者指令来监控 docker 容器服务的运行状态。
 
-<b>语法：</b>
+语法：
 
 ```dockerfile
 HEALTHCHECK [选项] CMD <命令>：设置检查容器健康状况的命令
@@ -280,7 +280,7 @@ HEALTHCHECK [选项] CMD <命令> : 这边 CMD 后面跟随的命令使用，可
 
 用于延迟构建命令的执行。简单的说，就是 Dockerfile 里用 ONBUILD 指定的命令，在本次构建镜像的过程中不会执行（假设镜像为 test-build）。当有新的 Dockerfile 使用了之前构建的镜像 FROM test-build ，这是执行新镜像的 Dockerfile 构建时候，会执行 test-build 的 Dockerfile 里的 ONBUILD 指定的命令。
 
-<b>语法：</b>
+语法：
 
 ```dockerfile
 ONBUILD <其它指令>

@@ -12,7 +12,7 @@ docker kill [OPTIONS] CONTAINER [CONTAINER...]
 
 - -s :向容器发送一个信号
 
-## 实例
+## Example
 
 杀掉运行中的容器 nginx01
 

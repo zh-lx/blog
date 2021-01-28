@@ -14,7 +14,7 @@ docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
 - -i :即使没有附加也保持 STDIN 打开
 - -t :分配一个伪终端
 
-## 实例
+## Example
 
 在容器 mynginx 中以交互模式执行容器内 /root/ok.sh 脚本:
 

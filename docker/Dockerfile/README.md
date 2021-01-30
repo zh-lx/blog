@@ -286,3 +286,28 @@ HEALTHCHECK [选项] CMD <命令> : 这边 CMD 后面跟随的命令使用，可
 ONBUILD <其它指令>
 ···
 ```
+
+## Example
+
+创建一个 nodejs 实例:
+
+```dockerfile
+FROM node:10-alpine
+COPY . /app/
+WORKDIR /app
+RUN npm install
+EXPOSE 3000
+CMD ["node", "app.js"]
+```
+
+创建一个 pm2 实例:
+
+```dockerfile
+FROM keymetrics/pm2:latest-alpine
+ADD . /usr/src/app
+WORKDIR /usr/src/app
+RUN npm config set registry https://registry.npm.taobao.org/ && \
+    npm i
+EXPOSE 3000
+CMD ["pm2-runtime", "start", "process.yml"]
+```

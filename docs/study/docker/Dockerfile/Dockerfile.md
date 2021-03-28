@@ -82,7 +82,7 @@ COPY [--chown=<user>:<group>] <源路径1>...  <目标路径>
 COPY [--chown=<user>:<group>] ["<源路径1>",...  "<目标路径>"]
 ```
 
-- [--chown=<user>:<group>]：可选参数，用户改变复制到容器内文件的拥有者和属组。
+- [--chown=\<user>:\<group>]：可选参数，用户改变复制到容器内文件的拥有者和属组。
 - <源路径>：源文件或者源目录，这里可以是通配符表达式，其通配符规则要满足 Go 的 filepath.Match 规则。
 - <目标路径>：容器内的指定路径，该路径不用事先建好，路径不存在的话，会自动创建
 
@@ -189,7 +189,7 @@ ENV <key1>=<value1> <key2>=<value2>...
 
 Example:
 
-设置 NODE_VERSION = 7.2.0 ， 在后续的指令中可以通过 $NODE_VERSION 引用：
+设置 NODE_VERSION = 7.2.0 ， 在后续的指令中可以通过 \$NODE_VERSION 引用：
 
 ```dockerfile
 ENV NODE_VERSION 7.2.0

@@ -9,54 +9,6 @@ import GlobalLayout from "D:\\code\\git-projects\\docs\\node_modules\\@vuepress\
 injectComponentOption(GlobalLayout, 'mixins', rootMixins)
 export const routes = [
   {
-    name: "v-af66a064",
-    path: "/study/docker/docker-compose/docker-compose.html",
-    component: GlobalLayout,
-    beforeEnter: (to, from, next) => {
-      ensureAsyncComponentsLoaded("Layout", "v-af66a064").then(next)
-    },
-  },
-  {
-    name: "v-323de50e",
-    path: "/study/docker/Dockerfile/Dockerfile.html",
-    component: GlobalLayout,
-    beforeEnter: (to, from, next) => {
-      ensureAsyncComponentsLoaded("Layout", "v-323de50e").then(next)
-    },
-  },
-  {
-    name: "v-6fc9493b",
-    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/exec.html",
-    component: GlobalLayout,
-    beforeEnter: (to, from, next) => {
-      ensureAsyncComponentsLoaded("Layout", "v-6fc9493b").then(next)
-    },
-  },
-  {
-    path: "/study/docker/docker命令/exec.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/exec.html"
-  },
-  {
-    path: "/study/docker/docker命令/exec.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/exec.html"
-  },
-  {
-    name: "v-15b1596d",
-    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/build.html",
-    component: GlobalLayout,
-    beforeEnter: (to, from, next) => {
-      ensureAsyncComponentsLoaded("Layout", "v-15b1596d").then(next)
-    },
-  },
-  {
-    path: "/study/docker/docker命令/build.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/build.html"
-  },
-  {
-    path: "/study/docker/docker命令/build.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/build.html"
-  },
-  {
     name: "v-29565000",
     path: "/",
     component: GlobalLayout,
@@ -85,6 +37,38 @@ export const routes = [
     redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/create.html"
   },
   {
+    name: "v-3e6f5aa1",
+    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/kill.html",
+    component: GlobalLayout,
+    beforeEnter: (to, from, next) => {
+      ensureAsyncComponentsLoaded("Layout", "v-3e6f5aa1").then(next)
+    },
+  },
+  {
+    path: "/study/docker/docker命令/kill.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/kill.html"
+  },
+  {
+    path: "/study/docker/docker命令/kill.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/kill.html"
+  },
+  {
+    name: "v-6fc9493b",
+    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/exec.html",
+    component: GlobalLayout,
+    beforeEnter: (to, from, next) => {
+      ensureAsyncComponentsLoaded("Layout", "v-6fc9493b").then(next)
+    },
+  },
+  {
+    path: "/study/docker/docker命令/exec.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/exec.html"
+  },
+  {
+    path: "/study/docker/docker命令/exec.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/exec.html"
+  },
+  {
     name: "v-58b49a6d",
     path: "/study/docker/docker%E5%91%BD%E4%BB%A4/pause.html",
     component: GlobalLayout,
@@ -101,20 +85,20 @@ export const routes = [
     redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/pause.html"
   },
   {
-    name: "v-3e6f5aa1",
-    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/kill.html",
+    name: "v-15b1596d",
+    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/build.html",
     component: GlobalLayout,
     beforeEnter: (to, from, next) => {
-      ensureAsyncComponentsLoaded("Layout", "v-3e6f5aa1").then(next)
+      ensureAsyncComponentsLoaded("Layout", "v-15b1596d").then(next)
     },
   },
   {
-    path: "/study/docker/docker命令/kill.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/kill.html"
+    path: "/study/docker/docker命令/build.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/build.html"
   },
   {
-    path: "/study/docker/docker命令/kill.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/kill.html"
+    path: "/study/docker/docker命令/build.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/build.html"
   },
   {
     name: "v-0a4339d3",
@@ -133,84 +117,12 @@ export const routes = [
     redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/pull.html"
   },
   {
-    name: "v-3e4478d2",
-    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/ps.html",
+    name: "v-af66a064",
+    path: "/study/docker/docker-compose/docker-compose.html",
     component: GlobalLayout,
     beforeEnter: (to, from, next) => {
-      ensureAsyncComponentsLoaded("Layout", "v-3e4478d2").then(next)
+      ensureAsyncComponentsLoaded("Layout", "v-af66a064").then(next)
     },
-  },
-  {
-    path: "/study/docker/docker命令/ps.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/ps.html"
-  },
-  {
-    path: "/study/docker/docker命令/ps.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/ps.html"
-  },
-  {
-    name: "v-fd4fb466",
-    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/run.html",
-    component: GlobalLayout,
-    beforeEnter: (to, from, next) => {
-      ensureAsyncComponentsLoaded("Layout", "v-fd4fb466").then(next)
-    },
-  },
-  {
-    path: "/study/docker/docker命令/run.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/run.html"
-  },
-  {
-    path: "/study/docker/docker命令/run.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/run.html"
-  },
-  {
-    name: "v-1d897d27",
-    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/rm.html",
-    component: GlobalLayout,
-    beforeEnter: (to, from, next) => {
-      ensureAsyncComponentsLoaded("Layout", "v-1d897d27").then(next)
-    },
-  },
-  {
-    path: "/study/docker/docker命令/rm.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/rm.html"
-  },
-  {
-    path: "/study/docker/docker命令/rm.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/rm.html"
-  },
-  {
-    name: "v-278a4fcd",
-    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/restart.html",
-    component: GlobalLayout,
-    beforeEnter: (to, from, next) => {
-      ensureAsyncComponentsLoaded("Layout", "v-278a4fcd").then(next)
-    },
-  },
-  {
-    path: "/study/docker/docker命令/restart.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/restart.html"
-  },
-  {
-    path: "/study/docker/docker命令/restart.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/restart.html"
-  },
-  {
-    name: "v-74ad254e",
-    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/stop.html",
-    component: GlobalLayout,
-    beforeEnter: (to, from, next) => {
-      ensureAsyncComponentsLoaded("Layout", "v-74ad254e").then(next)
-    },
-  },
-  {
-    path: "/study/docker/docker命令/stop.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/stop.html"
-  },
-  {
-    path: "/study/docker/docker命令/stop.html",
-    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/stop.html"
   },
   {
     name: "v-77429fed",
@@ -229,6 +141,78 @@ export const routes = [
     redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/start.html"
   },
   {
+    name: "v-278a4fcd",
+    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/restart.html",
+    component: GlobalLayout,
+    beforeEnter: (to, from, next) => {
+      ensureAsyncComponentsLoaded("Layout", "v-278a4fcd").then(next)
+    },
+  },
+  {
+    path: "/study/docker/docker命令/restart.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/restart.html"
+  },
+  {
+    path: "/study/docker/docker命令/restart.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/restart.html"
+  },
+  {
+    name: "v-323de50e",
+    path: "/study/docker/Dockerfile/Dockerfile.html",
+    component: GlobalLayout,
+    beforeEnter: (to, from, next) => {
+      ensureAsyncComponentsLoaded("Layout", "v-323de50e").then(next)
+    },
+  },
+  {
+    name: "v-3e4478d2",
+    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/ps.html",
+    component: GlobalLayout,
+    beforeEnter: (to, from, next) => {
+      ensureAsyncComponentsLoaded("Layout", "v-3e4478d2").then(next)
+    },
+  },
+  {
+    path: "/study/docker/docker命令/ps.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/ps.html"
+  },
+  {
+    path: "/study/docker/docker命令/ps.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/ps.html"
+  },
+  {
+    name: "v-1d897d27",
+    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/rm.html",
+    component: GlobalLayout,
+    beforeEnter: (to, from, next) => {
+      ensureAsyncComponentsLoaded("Layout", "v-1d897d27").then(next)
+    },
+  },
+  {
+    path: "/study/docker/docker命令/rm.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/rm.html"
+  },
+  {
+    path: "/study/docker/docker命令/rm.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/rm.html"
+  },
+  {
+    name: "v-74ad254e",
+    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/stop.html",
+    component: GlobalLayout,
+    beforeEnter: (to, from, next) => {
+      ensureAsyncComponentsLoaded("Layout", "v-74ad254e").then(next)
+    },
+  },
+  {
+    path: "/study/docker/docker命令/stop.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/stop.html"
+  },
+  {
+    path: "/study/docker/docker命令/stop.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/stop.html"
+  },
+  {
     name: "v-183cf60d",
     path: "/study/docker/docker%E5%91%BD%E4%BB%A4/unpause.html",
     component: GlobalLayout,
@@ -243,6 +227,22 @@ export const routes = [
   {
     path: "/study/docker/docker命令/unpause.html",
     redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/unpause.html"
+  },
+  {
+    name: "v-fd4fb466",
+    path: "/study/docker/docker%E5%91%BD%E4%BB%A4/run.html",
+    component: GlobalLayout,
+    beforeEnter: (to, from, next) => {
+      ensureAsyncComponentsLoaded("Layout", "v-fd4fb466").then(next)
+    },
+  },
+  {
+    path: "/study/docker/docker命令/run.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/run.html"
+  },
+  {
+    path: "/study/docker/docker命令/run.html",
+    redirect: "/study/docker/docker%E5%91%BD%E4%BB%A4/run.html"
   },
   {
     path: '*',

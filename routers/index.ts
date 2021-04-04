@@ -1,5 +1,5 @@
-const path = require('path');
-const fs = require('fs');
+import * as path from 'path';
+import * as fs from 'fs';
 
 const getCatalog = (dir) => {
   const children = [];
@@ -9,7 +9,8 @@ const getCatalog = (dir) => {
     const stat = fs.statSync(path);
     if (stat && stat.isDirectory()) {
       const obj = {
-        title: filename,
+        text: filename,
+        isGroup: true,
         children: getCatalog(path),
       };
       children.unshift(obj);
@@ -22,7 +23,9 @@ const getCatalog = (dir) => {
   return children;
 };
 
-const getPath = (dirName) => path.resolve(__dirname, '../study', dirName);
+const CatalogPath = path.resolve(__dirname, './docs/study');
+
+const getPath = (dirName) => path.resolve(CatalogPath, dirName);
 
 module.exports = {
   '/study/docker': getCatalog(getPath('docker')),

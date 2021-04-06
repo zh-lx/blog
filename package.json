@@ -6,7 +6,10 @@
   "repository": "git@github.com:zh-lx/docs.git",
   "author": "zh-lx <18366276315@163.com>",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "less": "^4.1.1",
+    "less-loader": "^8.0.0"
+  },
   "scripts": {
     "docs:dev": "vuepress dev docs --temp .temp",
     "docs:build": "vuepress build docs"

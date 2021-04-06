@@ -23,7 +23,7 @@ const getCatalog = (dir) => {
   return children;
 };
 
-const CatalogPath = path.resolve(__dirname, './docs/study');
+const CatalogPath = path.resolve(__dirname, '../docs/study');
 
 const getPath = (dirName) => path.resolve(CatalogPath, dirName);
 

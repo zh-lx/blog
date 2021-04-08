@@ -1,18 +1,22 @@
 <template>
   <header class="zh-lx-navbar">
-    <img :src="logo" alt="logo" class="logo" />
+    <img :src="data.logo" alt="logo" class="logo" />
   </header>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
+import { useThemeData } from '@vuepress/plugin-theme-data/lib/composables';
 import Config from '../config';
 
 export default defineComponent({
   setup() {
     const configOptions = reactive(Config);
+    const data = useThemeData();
+    console.log(data.value);
     return {
       ...configOptions,
+      data,
     };
   },
 });

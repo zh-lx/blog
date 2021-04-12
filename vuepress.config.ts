@@ -1,7 +1,6 @@
 import * as path from 'path';
 module.exports = {
-  // theme: 'zhlx',
-  title: 'Zh-lx',
+  title: "Zlx's Blog",
   description: 'Zh-lx 学习知识总结',
   themeConfig: {
     searchMaxSuggestions: true,

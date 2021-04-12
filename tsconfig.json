@@ -13,7 +13,7 @@
     "paths": {
       "@/*": ["theme/*"],
       "@components/*": ["theme/components/*"],
-      "@assets/*": ["theme/assets/*"]
+      "@assets/*": ["theme/public/*"]
     }
   }
 }

@@ -20,6 +20,6 @@ export default defineComponent({
 
 <style scoped lang="less">
 .zh-lx-theme {
-  padding-top: 56px;
+  padding-top: 46px;
 }
 </style>

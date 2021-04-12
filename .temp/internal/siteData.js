@@ -1,7 +1,7 @@
 export const siteData = {
   "base": "/",
   "lang": "en-US",
-  "title": "Zh-lx",
+  "title": "Zlx's Blog",
   "description": "Zh-lx 学习知识总结",
   "head": [],
   "locales": {}

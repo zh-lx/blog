@@ -6,7 +6,5 @@ module.exports = {
     searchMaxSuggestions: true,
   },
   theme: path.resolve(__dirname, './theme'),
-  templateDev: path.resolve(__dirname, './theme/templates/dev.html'),
-  templateSSR: path.resolve(__dirname, './theme/templates/ssr.html'),
   // head,
 };

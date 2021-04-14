@@ -23,3 +23,4 @@ export default defineComponent({
   padding-top: 46px;
 }
 </style>
+<style lang="scss" src="@vuepress/plugin-palette/style"></style>

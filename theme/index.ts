@@ -11,4 +11,11 @@ module.exports = {
   sideBar: routers,
   templateDev: path.resolve(__dirname, './templates/dev.html'),
   templateSSR: path.resolve(__dirname, './templates/ssr.html'),
+  plugins: [['@vuepress/plugin-palette', { preset: 'sass' }]],
+  navBar: [
+    {
+      text: 'docker',
+      link: '/study/docker/docker-compose/docker-compose.md',
+    },
+  ],
 };

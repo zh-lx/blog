@@ -12,7 +12,8 @@
   },
   "scripts": {
     "docs:dev": "vuepress dev docs --temp .temp",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "eject": "./node_modules/@vuepress/cli/bin/vuepress.js eject"
   },
   "dependencies": {
     "vuepress": "^2.0.0-beta.6"

@@ -15,10 +15,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { useSidebarItems } from '../composables'
-import NavbarLinks from './NavbarLinks.vue'
-import { SidebarChild } from './SidebarChild'
+import { defineComponent } from 'vue';
+import { useSidebarItems } from '../composables';
+import NavbarLinks from './NavbarLinks.vue';
+import { SidebarChild } from './SidebarChild';
 
 export default defineComponent({
   name: 'Sidebar',
@@ -29,10 +29,10 @@ export default defineComponent({
   },
 
   setup() {
-    const sidebarItems = useSidebarItems()
+    const sidebarItems = useSidebarItems();
     return {
       sidebarItems,
-    }
+    };
   },
-})
+});
 </script>

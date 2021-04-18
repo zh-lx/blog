@@ -27,28 +27,28 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import type { ComputedRef } from 'vue'
+import { computed, defineComponent } from 'vue';
+import type { ComputedRef } from 'vue';
 import {
   usePageData,
   usePageFrontmatter,
   useSiteLocaleData,
-} from '@vuepress/client'
-import { useThemeLocaleData } from '../composables'
-import type { DefaultThemePageData, NavLink as NavLinkType } from '../types'
-import { resolveEditLink } from '../utils'
-import NavLink from './NavLink.vue'
+} from '@vuepress/client';
+import { useThemeLocaleData } from '../composables';
+import type { DefaultThemePageData, NavLink as NavLinkType } from '../types';
+import { resolveEditLink } from '../utils';
+import NavLink from './NavLink.vue';
 
 const useEditNavLink = (): ComputedRef<null | NavLinkType> => {
-  const themeLocale = useThemeLocaleData()
-  const page = usePageData<DefaultThemePageData>()
-  const frontmatter = usePageFrontmatter()
+  const themeLocale = useThemeLocaleData();
+  const page = usePageData<DefaultThemePageData>();
+  const frontmatter = usePageFrontmatter();
 
   return computed(() => {
     const showEditLink =
-      frontmatter.value.editLink ?? themeLocale.value.editLink ?? true
+      frontmatter.value.editLink ?? themeLocale.value.editLink ?? true;
     if (!showEditLink) {
-      return null
+      return null;
     }
 
     const {
@@ -57,9 +57,9 @@ const useEditNavLink = (): ComputedRef<null | NavLinkType> => {
       docsBranch = 'main',
       docsDir = '',
       editLinkText,
-    } = themeLocale.value
+    } = themeLocale.value;
 
-    if (!docsRepo) return null
+    if (!docsRepo) return null;
 
     const editLink = resolveEditLink({
       docsRepo,
@@ -67,53 +67,53 @@ const useEditNavLink = (): ComputedRef<null | NavLinkType> => {
       docsDir,
       filePathRelative: page.value.filePathRelative,
       editLinkPattern: themeLocale.value.editLinkPattern,
-    })
+    });
 
-    if (!editLink) return null
+    if (!editLink) return null;
 
     return {
       text: editLinkText ?? 'Edit this page',
       link: editLink,
-    }
-  })
-}
+    };
+  });
+};
 
 const useLastUpdated = (): ComputedRef<null | string> => {
-  const siteLocale = useSiteLocaleData()
-  const themeLocale = useThemeLocaleData()
-  const page = usePageData<DefaultThemePageData>()
-  const frontmatter = usePageFrontmatter()
+  const siteLocale = useSiteLocaleData();
+  const themeLocale = useThemeLocaleData();
+  const page = usePageData<DefaultThemePageData>();
+  const frontmatter = usePageFrontmatter();
 
   return computed(() => {
     const showLastUpdated =
-      frontmatter.value.lastUpdated ?? themeLocale.value.lastUpdated ?? true
+      frontmatter.value.lastUpdated ?? themeLocale.value.lastUpdated ?? true;
 
-    if (!showLastUpdated) return null
+    if (!showLastUpdated) return null;
 
-    if (!page.value.git?.updatedTime) return null
+    if (!page.value.git?.updatedTime) return null;
 
-    const updatedDate = new Date(page.value.git?.updatedTime)
+    const updatedDate = new Date(page.value.git?.updatedTime);
 
-    return updatedDate.toLocaleString(siteLocale.value.lang)
-  })
-}
+    return updatedDate.toLocaleString(siteLocale.value.lang);
+  });
+};
 
 const useContributors = (): ComputedRef<
   null | Required<DefaultThemePageData['git']>['contributors']
 > => {
-  const themeLocale = useThemeLocaleData()
-  const page = usePageData<DefaultThemePageData>()
-  const frontmatter = usePageFrontmatter()
+  const themeLocale = useThemeLocaleData();
+  const page = usePageData<DefaultThemePageData>();
+  const frontmatter = usePageFrontmatter();
 
   return computed(() => {
     const showContributors =
-      frontmatter.value.contributors ?? themeLocale.value.contributors ?? true
+      frontmatter.value.contributors ?? themeLocale.value.contributors ?? true;
 
-    if (!showContributors) return null
+    if (!showContributors) return null;
 
-    return page.value.git?.contributors ?? null
-  })
-}
+    return page.value.git?.contributors ?? null;
+  });
+};
 
 export default defineComponent({
   name: 'PageMeta',
@@ -123,17 +123,17 @@ export default defineComponent({
   },
 
   setup() {
-    const themeLocale = useThemeLocaleData()
-    const editNavLink = useEditNavLink()
-    const lastUpdated = useLastUpdated()
-    const contributors = useContributors()
+    const themeLocale = useThemeLocaleData();
+    const editNavLink = useEditNavLink();
+    const lastUpdated = useLastUpdated();
+    const contributors = useContributors();
 
     return {
       themeLocale,
       editNavLink,
       lastUpdated,
       contributors,
-    }
+    };
   },
-})
+});
 </script>

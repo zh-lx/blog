@@ -29,5 +29,5 @@ const getPath = (dirName) => path.resolve(CatalogPath, dirName);
 const dockerPath = getCatalog(getPath('docker'));
 
 module.exports = {
-  '/study/docker': dockerPath,
+  '/study': dockerPath,
 };

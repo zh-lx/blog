@@ -1,6 +1,6 @@
 <template>
   <main class="home" :aria-labelledby="heroText ? 'main-title' : null">
-    <header class="hero">
+    <div class="hero">
       <img v-if="heroImage" :src="heroImage" :alt="heroAlt" />
 
       <h1 v-if="heroText" id="main-title">
@@ -11,16 +11,11 @@
         {{ tagline }}
       </p>
 
-      <p v-if="actions.length" class="actions">
-        <NavLink
-          v-for="action in actions"
-          :key="action.text"
-          class="action-button"
-          :class="[action.type]"
-          :item="action"
-        />
-      </p>
-    </header>
+      <div class="left-top-circle"></div>
+      <div class="left-bottom-cube"></div>
+      <div class="right-top-heart"></div>
+      <div class="right-bottom-octagon"></div>
+    </div>
 
     <div v-if="features.length" class="features">
       <div v-for="feature in features" :key="feature.title" class="feature">
@@ -42,15 +37,15 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue';
 import {
   usePageFrontmatter,
   useSiteLocaleData,
   withBase,
-} from '@vuepress/client'
-import { isArray } from '@vuepress/shared'
-import type { DefaultThemeHomePageFrontmatter } from '../types'
-import NavLink from './NavLink.vue'
+} from '@vuepress/client';
+import { isArray } from '@vuepress/shared';
+import type { DefaultThemeHomePageFrontmatter } from '../types';
+import NavLink from './NavLink.vue';
 
 export default defineComponent({
   name: 'Home',
@@ -60,74 +55,77 @@ export default defineComponent({
   },
 
   setup() {
-    const frontmatter = usePageFrontmatter<DefaultThemeHomePageFrontmatter>()
-    const siteLocale = useSiteLocaleData()
+    const frontmatter = usePageFrontmatter<DefaultThemeHomePageFrontmatter>();
+    const siteLocale = useSiteLocaleData();
 
     const heroImage = computed(() => {
       if (!frontmatter.value.heroImage) {
-        return null
+        return null;
       }
 
-      return withBase(frontmatter.value.heroImage)
-    })
+      return withBase(frontmatter.value.heroImage);
+    });
 
     const heroText = computed(() => {
       if (frontmatter.value.heroText === null) {
-        return null
+        return null;
       }
-      return frontmatter.value.heroText || siteLocale.value.title || 'Hello'
-    })
+      return frontmatter.value.heroText || siteLocale.value.title || 'Hello';
+    });
 
     const heroAlt = computed(
       () => frontmatter.value.heroAlt || heroText.value || 'hero'
-    )
+    );
 
     const tagline = computed(() => {
       if (frontmatter.value.tagline === null) {
-        return null
+        return null;
       }
       return (
         frontmatter.value.tagline ||
         siteLocale.value.description ||
         'Welcome to your VuePress site'
-      )
-    })
-
-    const actions = computed(() => {
-      if (!isArray(frontmatter.value.actions)) {
-        return []
-      }
-
-      return frontmatter.value.actions.map(
-        ({ text, link, type = 'primary' }) => ({
-          text,
-          link,
-          type,
-        })
-      )
-    })
+      );
+    });
 
     const features = computed(() => {
       if (isArray(frontmatter.value.features)) {
-        return frontmatter.value.features
+        return frontmatter.value.features;
       }
-      return []
-    })
+      return [];
+    });
 
-    const footer = computed(() => frontmatter.value.footer)
+    const footer = computed(() => frontmatter.value.footer);
 
-    const footerHtml = computed(() => frontmatter.value.footerHtml)
+    const footerHtml = computed(() => frontmatter.value.footerHtml);
 
     return {
       heroImage,
       heroAlt,
       heroText,
       tagline,
-      actions,
       features,
       footer,
       footerHtml,
-    }
+    };
   },
-})
+});
 </script>
+<style lang="less" scoped>
+.hero {
+  height: calc(100vh - 3.6rem);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: url('./assets//homebg.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#main-title,
+.description {
+  color: #fff;
+}
+</style>

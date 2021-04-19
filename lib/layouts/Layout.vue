@@ -54,18 +54,22 @@ import {
   onUnmounted,
   ref,
   Transition,
-} from 'vue'
-import { useRouter } from 'vue-router'
-import { usePageData, usePageFrontmatter } from '@vuepress/client'
-import Home from '../components/Home.vue'
-import Page from '../components/Page.vue'
-import Navbar from '../components/Navbar.vue'
-import Sidebar from '../components/Sidebar.vue'
+} from 'vue';
+import { useRouter } from 'vue-router';
+import {
+  usePageData,
+  usePagesData,
+  usePageFrontmatter,
+} from '@vuepress/client';
+import Home from '../components/Home.vue';
+import Page from '../components/Page.vue';
+import Navbar from '../components/Navbar.vue';
+import Sidebar from '../components/Sidebar.vue';
 import {
   useScrollPromise,
   useSidebarItems,
   useThemeLocaleData,
-} from '../composables'
+} from '../composables';
 
 export default defineComponent({
   name: 'Layout',
@@ -79,62 +83,62 @@ export default defineComponent({
   },
 
   setup() {
-    const page = usePageData()
-    const frontmatter = usePageFrontmatter()
-    const themeLocale = useThemeLocaleData()
+    const page = usePageData();
+    const frontmatter = usePageFrontmatter();
+    const themeLocale = useThemeLocaleData();
 
     // navbar
     const shouldShowNavbar = computed(
       () =>
         frontmatter.value.navbar !== false && themeLocale.value.navbar !== false
-    )
+    );
 
     // sidebar
-    const sidebarItems = useSidebarItems()
-    const isSidebarOpen = ref(false)
+    const sidebarItems = useSidebarItems();
+    const isSidebarOpen = ref(false);
     const toggleSidebar = (to?: boolean): void => {
-      isSidebarOpen.value = typeof to === 'boolean' ? to : !isSidebarOpen.value
-    }
-    const touchStart = { x: 0, y: 0 }
+      isSidebarOpen.value = typeof to === 'boolean' ? to : !isSidebarOpen.value;
+    };
+    const touchStart = { x: 0, y: 0 };
     const onTouchStart = (e): void => {
-      touchStart.x = e.changedTouches[0].clientX
-      touchStart.y = e.changedTouches[0].clientY
-    }
+      touchStart.x = e.changedTouches[0].clientX;
+      touchStart.y = e.changedTouches[0].clientY;
+    };
     const onTouchEnd = (e): void => {
-      const dx = e.changedTouches[0].clientX - touchStart.x
-      const dy = e.changedTouches[0].clientY - touchStart.y
+      const dx = e.changedTouches[0].clientX - touchStart.x;
+      const dy = e.changedTouches[0].clientY - touchStart.y;
       if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
         if (dx > 0 && touchStart.x <= 80) {
-          toggleSidebar(true)
+          toggleSidebar(true);
         } else {
-          toggleSidebar(false)
+          toggleSidebar(false);
         }
       }
-    }
+    };
 
     // classes
     const containerClass = computed(() => ({
       'no-navbar': !shouldShowNavbar.value,
       'no-sidebar': !sidebarItems.value.length,
       'sidebar-open': isSidebarOpen.value,
-    }))
+    }));
 
     // close sidebar after navigation
-    let unregisterRouterHook
+    let unregisterRouterHook;
     onMounted(() => {
-      const router = useRouter()
+      const router = useRouter();
       unregisterRouterHook = router.afterEach(() => {
-        toggleSidebar(false)
-      })
-    })
+        toggleSidebar(false);
+      });
+    });
     onUnmounted(() => {
-      unregisterRouterHook()
-    })
+      unregisterRouterHook();
+    });
 
     // handle scrollBehavior with transition
-    const scrollPromise = useScrollPromise()
-    const onBeforeEnter = scrollPromise.resolve
-    const onBeforeLeave = scrollPromise.pending
+    const scrollPromise = useScrollPromise();
+    const onBeforeEnter = scrollPromise.resolve;
+    const onBeforeLeave = scrollPromise.pending;
 
     return {
       frontmatter,
@@ -146,7 +150,7 @@ export default defineComponent({
       onTouchEnd,
       onBeforeEnter,
       onBeforeLeave,
-    }
+    };
   },
-})
+});
 </script>

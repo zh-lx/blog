@@ -1,8 +1,6 @@
 <template>
   <main class="home" :aria-labelledby="heroText ? 'main-title' : null">
     <div class="hero">
-      <img v-if="heroImage" :src="heroImage" :alt="heroAlt" />
-
       <h1 v-if="heroText" id="main-title">
         {{ heroText }}
       </h1>
@@ -16,13 +14,7 @@
       <div class="right-top-heart"></div>
       <div class="right-bottom-octagon"></div>
     </div>
-
-    <div v-if="features.length" class="features">
-      <div v-for="feature in features" :key="feature.title" class="feature">
-        <h2>{{ feature.title }}</h2>
-        <p>{{ feature.details }}</p>
-      </div>
-    </div>
+    <Blogs />
 
     <div class="theme-default-content custom">
       <Content />
@@ -43,15 +35,16 @@ import {
   useSiteLocaleData,
   withBase,
 } from '@vuepress/client';
-import { isArray } from '@vuepress/shared';
 import type { DefaultThemeHomePageFrontmatter } from '../types';
 import NavLink from './NavLink.vue';
+import Blogs from './Blogs.vue';
 
 export default defineComponent({
   name: 'Home',
 
   components: {
     NavLink,
+    Blogs,
   },
 
   setup() {
@@ -88,13 +81,6 @@ export default defineComponent({
       );
     });
 
-    const features = computed(() => {
-      if (isArray(frontmatter.value.features)) {
-        return frontmatter.value.features;
-      }
-      return [];
-    });
-
     const footer = computed(() => frontmatter.value.footer);
 
     const footerHtml = computed(() => frontmatter.value.footerHtml);
@@ -104,7 +90,6 @@ export default defineComponent({
       heroAlt,
       heroText,
       tagline,
-      features,
       footer,
       footerHtml,
     };

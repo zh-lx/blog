@@ -1,18 +1,28 @@
 <template>
-  <div class="blog-list">1111</div>
+  <div class="blog-list">
+    <div v-for="(blog, index) in pages" :key="index" class="blog-item-div">
+      <BlogItem :blog="blog" />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue';
+import { defineComponent, watch, ref, onMounted } from 'vue';
 import { usePagesInfo } from '../composables';
+import BlogItem from './BlogItem.vue';
 
 export default defineComponent({
   name: 'Blogs',
+  components: {
+    BlogItem,
+  },
   setup() {
-    let pages;
+    let pages = ref([]);
     usePagesInfo().then((blogs) => {
-      pages = blogs;
+      pages.value = blogs.value;
+      console.log(pages.value);
     });
+
     return { pages };
   },
 });
@@ -21,5 +31,8 @@ export default defineComponent({
 <style scoped lang="less">
 .blog-list {
   padding: 0.7rem 1.5rem;
+  .blog-item-div {
+    margin-bottom: 1rem;
+  }
 }
 </style>

@@ -19,6 +19,9 @@ module.exports = {
   clientAppEnhanceFiles: path.resolve(__dirname, './clientAppEnhance.ts'),
   clientAppSetupFiles: path.resolve(__dirname, './clientAppSetup.ts'),
   extendsPageData: ({ filePathRelative }) => ({ filePathRelative }),
+  alias: {
+    '@': path.resolve(__dirname, './'),
+  },
   plugins: [
     [
       '@vuepress/active-header-links',

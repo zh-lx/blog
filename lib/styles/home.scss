@@ -42,6 +42,19 @@
 
   }
 
+  .home-main {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.7rem 1.5rem;
+    .home-main-left {
+      flex: 0.74;
+    }
+    .home-main-right {
+      flex: 0.26;
+      margin-left: 1.6rem;
+    }
+  }
+
   .footer {
     padding: 2.5rem;
     border-top: 1px solid $borderColor;

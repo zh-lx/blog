@@ -8,13 +8,12 @@
       <p v-if="tagline" class="description">
         {{ tagline }}
       </p>
-
-      <div class="left-top-circle"></div>
-      <div class="left-bottom-cube"></div>
-      <div class="right-top-heart"></div>
-      <div class="right-bottom-octagon"></div>
     </div>
-    <Blogs />
+
+    <div class="home-main">
+      <div class="home-main-left"><Blogs /></div>
+      <div class="home-main-right"><HomeRight /></div>
+    </div>
 
     <div class="theme-default-content custom">
       <Content />
@@ -37,6 +36,7 @@ import {
 import type { DefaultThemeHomePageFrontmatter } from '../types';
 import NavLink from './NavLink.vue';
 import Blogs from './Blogs.vue';
+import HomeRight from './HomeRight.vue';
 
 export default defineComponent({
   name: 'Home',
@@ -44,6 +44,7 @@ export default defineComponent({
   components: {
     NavLink,
     Blogs,
+    HomeRight,
   },
 
   setup() {

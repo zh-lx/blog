@@ -61,15 +61,16 @@ import {
   usePagesData,
   usePageFrontmatter,
 } from '@vuepress/client';
-import Home from '../components/Home.vue';
-import Page from '../components/Page.vue';
-import Navbar from '../components/Navbar.vue';
-import Sidebar from '../components/Sidebar.vue';
+import Home from '@/components/Home.vue';
+import Page from '@/components/Page.vue';
+import Navbar from '@/components/Navbar.vue';
+import Sidebar from '@/components/Sidebar.vue';
 import {
   useScrollPromise,
   useSidebarItems,
   useThemeLocaleData,
-} from '../composables';
+} from '@/composables';
+import { setMode } from '@/utils/setMode';
 
 export default defineComponent({
   name: 'Layout',
@@ -130,6 +131,7 @@ export default defineComponent({
       unregisterRouterHook = router.afterEach(() => {
         toggleSidebar(false);
       });
+      setMode();
     });
     onUnmounted(() => {
       unregisterRouterHook();

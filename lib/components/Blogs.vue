@@ -28,7 +28,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .blog-list {
   padding: 0.7rem 1.5rem;
   .blog-item-div {

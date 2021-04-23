@@ -1,6 +1,6 @@
 <template>
   <main class="home" :aria-labelledby="heroText ? 'main-title' : null">
-    <div class="hero">
+    <div class="hero" :style="{ backgroundImage: `url(${homeBgImage})` }">
       <h1 v-if="heroText" id="main-title">
         {{ heroText }}
       </h1>
@@ -48,7 +48,7 @@ export default defineComponent({
   },
 
   setup() {
-    const frontmatter = usePageFrontmatter<DefaultThemeHomePageFrontmatter>();
+    const frontmatter = usePageFrontmatter();
     const siteLocale = useSiteLocaleData();
 
     const heroText = computed(() => {
@@ -56,6 +56,12 @@ export default defineComponent({
         return null;
       }
       return frontmatter.value.heroText || siteLocale.value.title || 'Hello';
+    });
+
+    const homeBgImage = computed(() => {
+      return (
+        frontmatter.value.bgImage || 'https://i.postimg.cc/nhrPH83V/home-bg.jpg'
+      );
     });
 
     const tagline = computed(() => {
@@ -78,6 +84,7 @@ export default defineComponent({
       tagline,
       footer,
       footerHtml,
+      homeBgImage,
     };
   },
 });

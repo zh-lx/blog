@@ -1,0 +1,3 @@
+[submodule "vuepress-theme-writing"]
+	path = vuepress-theme-writing
+	url = git@github.com:zh-lx/vuepress-theme-writing.git

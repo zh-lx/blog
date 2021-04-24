@@ -22,3 +22,13 @@ export type Blog = {
   path: string;
   title: string;
 };
+
+export type Tag = {
+  name: string;
+  count: number;
+};
+
+export type Category = {
+  name: string;
+  count: number;
+};

@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
+const absolutePath = path.resolve(__dirname, '../docs');
 
 const getCatalog = (dir) => {
   const children = [];
@@ -15,19 +16,31 @@ const getCatalog = (dir) => {
       };
       children.unshift(obj);
     } else {
-      const completePath = dir.replace(/\\/g, '/');
-      const index = completePath.indexOf('/study/');
-      children.push(`${completePath.slice(index)}/${filename}`);
+      const completePath = dir;
+      children.push(
+        `${completePath.slice(absolutePath.length)}/${filename}`.replace(
+          '\\',
+          '/'
+        )
+      );
     }
   });
   return children;
 };
 
-const CatalogPath = path.resolve(__dirname, '../docs/study');
+const CatalogPath = path.resolve(__dirname, '../docs');
 
 const getPath = (dirName) => path.resolve(CatalogPath, dirName);
-const dockerPath = getCatalog(getPath('docker'));
+const CI_CD = getCatalog(getPath('CI.CD'));
+const 工程化 = getCatalog(getPath('工程化'));
+const react = getCatalog(getPath('react'));
+const team = getCatalog(getPath('team'));
+const vue2 = getCatalog(getPath('vue2'));
 
 module.exports = {
-  '/study': dockerPath,
+  '/CI.CD': CI_CD,
+  '/工程化': 工程化,
+  '/react': react,
+  '/team': team,
+  '/vue2': vue2,
 };

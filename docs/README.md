@@ -3,6 +3,7 @@ home: true
 bgImage: /images/home-bg.jpg
 heroText: zh-lx's blog
 tagline: 欲望以提升热忱，毅力以磨平高山
+blog: false
 author:
   {
     name: '周立翔',

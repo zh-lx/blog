@@ -44,12 +44,15 @@
   .home-main {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     padding: 1.5rem 1.5rem;
     .home-main-left {
-      flex: 1;
+      flex: 2;
     }
     .home-main-right {
-      width: 300px;
+      flex: 1;
+      max-width: 300px;
+      min-width: 160px;
       margin-left: 1.6rem;
     }
   }
@@ -78,5 +81,16 @@
         font-size: 1.2rem;
       }
     }
+    .home-main {
+      .home-main-left {
+        width: 100%;
+      }
+      .home-main-right {
+        width: 100%;
+        margin-left: 0;
+        min-width: 100%;
+      }
+    }
+    
   }
 }

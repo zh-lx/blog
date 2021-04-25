@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "esnext"],
+    "lib": ["dom", "esnext", "ES2015"],
     "module": "es2015",
+    "types": ["node"],
     "moduleResolution": "node",
     "preserveConstEnums": true,
     "removeComments": true,

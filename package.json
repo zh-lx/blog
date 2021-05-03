@@ -11,10 +11,10 @@
     "less-loader": "^8.0.0"
   },
   "scripts": {
-    "docs:dev": "vuepress dev docs --temp .temp",
-    "docs:build": "vuepress build docs",
+    "dev": "vuepress dev docs --temp .temp",
+    "build": "rm rf ./docs/.vuepress/dist && vuepress build docs",
     "eject": "./node_modules/@vuepress/cli/bin/vuepress.js eject",
-    "pull": "git submodule update && git pull"
+    "pull": "git submodule update --init --recursive && git pull"
   },
   "dependencies": {
     "@vuepress/plugin-docsearch": "^2.0.0-alpha.1",

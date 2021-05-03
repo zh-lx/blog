@@ -12,7 +12,7 @@
   },
   "scripts": {
     "dev": "vuepress dev docs --temp .temp",
-    "build": "rm rf ./docs/.vuepress/dist && vuepress build docs",
+    "build": "rm -rf ./docs/.vuepress/dist && vuepress build docs",
     "eject": "./node_modules/@vuepress/cli/bin/vuepress.js eject",
     "pull": "git submodule update --init --recursive && git pull"
   },

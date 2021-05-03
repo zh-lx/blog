@@ -13,7 +13,8 @@
   "scripts": {
     "docs:dev": "vuepress dev docs --temp .temp",
     "docs:build": "vuepress build docs",
-    "eject": "./node_modules/@vuepress/cli/bin/vuepress.js eject"
+    "eject": "./node_modules/@vuepress/cli/bin/vuepress.js eject",
+    "pull": "git submodule update && git pull"
   },
   "dependencies": {
     "@vuepress/plugin-docsearch": "^2.0.0-alpha.1",

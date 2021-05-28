@@ -14,13 +14,12 @@
   },
   "scripts": {
     "dev": "vuepress dev docs --temp .temp",
-    "build": "rm -rf ./docs/.vuepress/dist && vuepress build docs",
+    "build": "yarn install && rm -rf ./docs/.vuepress/dist && vuepress build docs",
     "eject": "./node_modules/@vuepress/cli/bin/vuepress.js eject",
     "pull": "git pull && git submodule update --init --recursive"
   },
   "dependencies": {
     "@vuepress/plugin-search": "2.0.0-beta.13",
-    "easy-icon": "^1.1.0",
     "vuepress": "2.0.0-beta.13"
   }
 }

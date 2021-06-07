@@ -1,7 +1,7 @@
 import * as path from 'path';
 module.exports = {
-  title: "zh-lx's blog",
-  description: 'zh-lx学习知识总结',
+  title: '周立翔的博客',
+  description: '前端及全栈学习心得与总结',
   theme: path.resolve(__dirname, './vuepress-theme-writing'),
   markdown: {
     extractHeaders: {

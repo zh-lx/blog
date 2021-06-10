@@ -19,5 +19,4 @@ contact: {
     csdn: '',
     # zhihu: 'https://www.zhihu.com/people/zhou-li-xiang-66-91',
   }
-hideSidebar: true
 ---

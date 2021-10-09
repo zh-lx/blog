@@ -1,10 +1,3 @@
----
-theme: smartblue
-highlight: a11y-dark
----
-
-小知识，大挑战！本文正在参与“[程序员必备小知识](https://juejin.cn/post/7008476801634680869 'https://juejin.cn/post/7008476801634680869')”创作活动。本文已参与「[掘力星计划](https://juejin.cn/post/7012210233804079141/ 'https://juejin.cn/post/7012210233804079141/')」，赢取创作大礼包，挑战创作激励金。
-
 欢迎大家一起交流学习 react 源码，本系列导航请见：[React17 源码解析(开篇) —— 搭建 react 源码调试环境](https://juejin.cn/post/7014775797596553230/)
 
 要学习 react 源码，首先要对 react 的源码和整个架构有个大体的了解，这样学起来会事半功倍。本章将介绍一下 react 的源码和架构。

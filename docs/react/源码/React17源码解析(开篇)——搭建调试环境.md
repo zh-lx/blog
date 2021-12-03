@@ -1,4 +1,7 @@
-# React17 源码解析(开篇) —— 搭建调试环境
+---
+theme: smartblue
+highlight: a11y-dark
+---
 
 作为前端最优秀的开源框架之一，react 值得每一个前端开发者学习。今年花了很长的一段时间，反复理解品读了 react 的源码，感觉收获颇丰，趁着国庆假期打算<b>开始</b>写一系列 react v17 源码解析的文章和大家一起讨论学习。
 
@@ -8,13 +11,14 @@
 
 本系列的源码解析的 react 版本是 [v17.0.2](https://github.com/facebook/react/tree/17.0.2)，将从 react 应用的入口开始讲解，涉及到一个较为完整的 react 依赖的绝大部分的主要功能和核心，大体的内容纲要如下：
 
-- [jsx 和 React.createElement](https://juejin.cn/post/7014776739121496072/)
-- ReactDOM.render
-- fiber 架构
-- concurrent mode
-- render 和 commit 阶段
-- reconciliation 和 diff 算法
-- hooks 源码
+- [react 源码目录和架构](https://juejin.cn/post/7015853155367780383)
+- [jsx 和 React.createElement](https://juejin.cn/post/7015855371847729166/)
+- [深入理解 fiber](https://juejin.cn/post/7016512949330116645)
+- [详解 render 阶段(scheduler 和 reconciler)](https://juejin.cn/post/7019254208830373902/)
+- [全面理解 diff 算法](https://juejin.cn/post/7020595059095666724)
+- [commit 阶段](https://juejin.cn/post/7022816775188250660)
+- [一文搞懂 hooks 原理](https://juejin.cn/post/7023568411963686920)
+- 实现 mini react
 
 <b>由于上面的章节并未完结，后续实际写的过程中可能略有调整，本篇章会随时更新，感兴趣的看官老爷建议收藏一下本章作为目录导航。</b>
 
@@ -247,4 +251,4 @@ module.exports = {
 
 至此，我们的调试环境就搭建完成了，可以在 react 源码中通过 `debugger` 打断点或者 `console.log()` 输出日志进行愉快地调试了！
 
-最后贴一下搭建的调试环境的 github 地址：[debug-react](https://github.com/zh-lx/study-code/tree/main/packages/react/debug-react)，不想自己搭建调试环境的话可以直接 clone 我搭好的环境使用。
+最后贴一下搭建的调试环境的 github 地址：[debug-react](https://github.com/zh-lx/debug-react)，不想自己搭建调试环境的话可以直接 clone 我搭好的环境使用。

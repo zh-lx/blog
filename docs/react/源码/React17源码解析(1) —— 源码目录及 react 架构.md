@@ -1,4 +1,11 @@
+---
+theme: smartblue
+highlight: a11y-dark
+---
+
 欢迎大家一起交流学习 react 源码，本系列导航请见：[React17 源码解析(开篇) —— 搭建 react 源码调试环境](https://juejin.cn/post/7014775797596553230/)
+
+<hr />
 
 要学习 react 源码，首先要对 react 的源码和整个架构有个大体的了解，这样学起来会事半功倍。本章将介绍一下 react 的源码和架构。
 
@@ -87,11 +94,11 @@ react 的核心 api 都位于 `packages/react` 文件夹下，包括 `createElem
 
 react 为了保证页面能够流畅渲染，react16 之后的更新过程分为 render 和 commit 两个阶段。render 阶段包括 Scheduler(调度器) 和 Reconciler(协调器)，commit 阶段包括 Renderer(渲染器)：
 
-<img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4215a88654444d9d939a37db3f754534~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
+<img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d958db1f965f44ce9bd4897717334ddd~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 
-## jsx 转换
+## 触发更新
 
-首先是对 jsx 的转换，我们在写 react 应用时，想必都用过 jsx 语法，但 jsx 语法并不是原生的 js 语法。所以首先需要对 jsx 进行一个语法的转换，转换成浏览器可执行的原生 js 语句。
+触发更新的方式主要有以下几种：`ReactDOM.render`(包括首次渲染)、`setState`、`forUpdate`、hooks 中的 `useState` 以及 ref 的改变等引起的。
 
 ## scheduler
 

@@ -1,6 +1,5 @@
 ---
-theme: smartblue
-highlight: a11y-dark
+tag: ['react']
 ---
 
 作为前端最优秀的开源框架之一，react 值得每一个前端开发者学习。今年花了很长的一段时间，反复理解品读了 react 的源码，感觉收获颇丰，趁着国庆假期打算<b>开始</b>写一系列 react v17 源码解析的文章和大家一起讨论学习。

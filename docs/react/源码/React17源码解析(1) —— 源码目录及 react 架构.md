@@ -1,6 +1,5 @@
 ---
-theme: smartblue
-highlight: a11y-dark
+tag: ['react']
 ---
 
 欢迎大家一起交流学习 react 源码，本系列导航请见：[React17 源码解析(开篇) —— 搭建 react 源码调试环境](https://juejin.cn/post/7014775797596553230/)

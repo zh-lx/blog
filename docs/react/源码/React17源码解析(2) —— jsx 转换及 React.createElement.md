@@ -290,6 +290,4 @@ Component.prototype.forceUpdate = function (callback) {
 本章讲述了 jsx 在 react17 之前和之后的不同的转换，实际上 react17 之后 babel 的对 jsx 的转换就是比之前多了一步 `React.createElement` 的动作：
 <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/19eedac5735143e4a9ffab251f136f6a~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 
-另外讲述了 `React.createElement` 和 `React.Component` 的内部实现是怎样的。通过 babel 及 `React.createElement`，将 jsx 转换为了浏览器能够识别的原生 js 语法，为 react 后续对状态改变、事件响应以及页面更新等奠定了基础。
-
-后面的章节中，将探究 react 是如何一步步将状态等信息渲染为真实页面的。
+另外讲述了 `React.createElement` 和 `React.Component` 的内部实现是怎样的。通过 babel 及 `React.createElement`，将 jsx 转换为了浏览器能够识别的原生 js 语法，为 react 后续对状态改变、事件响应以及页面更新等奠定了基础。后面的章节中，将探究 react 是如何一步步将状态等信息渲染为真实页面的。

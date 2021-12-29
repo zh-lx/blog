@@ -8,7 +8,7 @@ tag: ['react']
 
 前两章讲到了，react 在 render 阶段的 `completeUnitWork` 执行完毕后，就执行 `commitRoot` 进入到了 commit 阶段，本章将讲解 commit 阶段执行过程源码。
 
-# 总览
+## 总览
 
 commit 阶段相比于 render 阶段要简单很多，因为大部分更新的前期操作都在 render 阶段做好了，commit 阶段主要做的是根据之前生成的 effectList，对相应的真实 dom 进行更新和渲染，这个阶段是不可中断的。
 
@@ -131,7 +131,7 @@ function commitRootImpl(root, renderPriorityLevel) {
 }
 ```
 
-# commitBeforeMutationEffects
+## commitBeforeMutationEffects
 
 `commitBeforeMutationEffects` 中，会从 firstEffect 开始，通过 nextEffect 不断对 effectList 链表进行遍历，若是当前的 fiber 节点有 flags 副作用，则执行 `commitBeforeMutationEffectOnFiber` 节点去对针对 class 组件单独处理。
 
@@ -199,7 +199,7 @@ function commitBeforeMutationLifeCycles(
 }
 ```
 
-# commitMutationEffects
+## commitMutationEffects
 
 `commitMutationEffects` 中会根据对 effectList 进行第二次遍历，根据 flags 的类型进行二进制与操作，然后根据结果去执行不同的操作，对真实 dom 进行修改：
 
@@ -281,9 +281,9 @@ function commitMutationEffects(
 
 下面我们重点来看一下 react 是如何对真实 dom 节点进行操作的。
 
-## 插入 dom 节点
+### 插入 dom 节点
 
-### 获取父节点及插入位置
+#### 获取父节点及插入位置
 
 插入 dom 节点的操作以 `commitPlacement` 为入口函数， `commitPlacement` 中会首先获取当前 fiber 的父 fiber 对应的真实 dom 节点以及在父节点下要插入的位置，根据父节点对应的 dom 是否为 container，去执行 `insertOrAppendPlacementNodeIntoContainer` 或者 `insertOrAppendPlacementNode` 进行节点的插入。
 
@@ -343,7 +343,7 @@ function commitPlacement(finishedWork: Fiber): void {
 }
 ```
 
-### 判断当前节点是否为单节点
+#### 判断当前节点是否为单节点
 
 我们以 `insertOrAppendPlacementNodeIntoContainer` 为例看一下其源码，里面通过 tag 属性判断了当前的 fiber 是否为原生 dom 节点。若是，则调用 `insertInContainerBefore` 或 `appendChildToContainer` 在相应位置插入真实 dom；若不是，则对当前 fiber 的所有子 fiber 调用 `insertOrAppendPlacementNodeIntoContainer` 进行遍历：
 
@@ -383,7 +383,7 @@ function insertOrAppendPlacementNodeIntoContainer(
 }
 ```
 
-### 在对应位置插入节点
+#### 在对应位置插入节点
 
 before 不为 null 时，说明要在某个 dom 节点之前插入新的 dom，调用 `insertInContainerBefore` 去进行插入，根据父节点是否注释类型，选择在父节点的父节点下插入新的 dom，还是直接在父节点下插入新的 dom：
 
@@ -429,7 +429,7 @@ export function appendChildToContainer(
 
 这几步都是以 `insertOrAppendPlacementNodeIntoContainer` 为例看源码，`insertOrAppendPlacementNode` 和它的唯一区别就是最后在对应位置插入节点时，不需要额外判断父节点 (container) 是否为 COMMENT_TYPE 了。
 
-## 更新 dom 节点
+### 更新 dom 节点
 
 更新操作以 `commitWork` 为入口函数，更新主要是针对 HostComponent 和 HostText 两种类型进行更新。
 
@@ -501,7 +501,7 @@ function commitWork(current: Fiber | null, finishedWork: Fiber): void {
 }
 ```
 
-### 更新 HostComponent
+#### 更新 HostComponent
 
 根据上面的 commitWork 的源码，更新 HostComponent 时，获取了真实 dom 节点实例、props 以及 updateQueue 之后，就调用 `commitUpdate` 对 dom 进行更新，它通过 `updateProperties` 函数将 props 变化应用到真实 dom 上。
 
@@ -602,7 +602,7 @@ function updateDOMProperties(
 }
 ```
 
-### 更新 HostText
+#### 更新 HostText
 
 HostText 的更新处理十分简单，调用 `commitTextUpdate`，里面直接将 dom 的 nodeValue 设置为 newText 的值：
 
@@ -618,7 +618,7 @@ export function commitTextUpdate(
 }
 ```
 
-## 删除 dom 节点
+### 删除 dom 节点
 
 删除 dom 节点的操作以 `commitDeletion` 为入口函数，它所要做的事情最复杂。react 会采用深度优先遍历去遍历整颗 fiber 树，找到需要删除的 fiber，除了要将对应的 dom 节点删除，还需要考虑 ref 的卸载、componentWillUnmount 等生命周期的调用：
 
@@ -646,7 +646,7 @@ function commitDeletion(
 }
 ```
 
-### unmountHostComponents
+#### unmountHostComponents
 
 `unmountHostComponents` 首先判断当前父节点是否合法，若是不合法寻找合法的父节点，然后通过深度优先遍历，去遍历整棵树，通过 `commitUnmount` 卸载 ref、执行生命周期。遇到是原生 dom 类型的节点，还会从对应的父节点下删除该节点。
 
@@ -755,7 +755,7 @@ function unmountHostComponents(
 }
 ```
 
-### commitNestedUnmounts
+#### commitNestedUnmounts
 
 `commitNestedUnmounts` 相比 `unmountHostComponents` 不需要额外做当前父节点是否合法的判断以及 react 节点类型的判断，直接采用深度优先遍历，去执行 `commitUnmount` 方法即可：
 
@@ -795,7 +795,7 @@ function commitNestedUnmounts(
 }
 ```
 
-### commitUnmount
+#### commitUnmount
 
 commitUnmount 中会完成对 react 组件 ref 的卸载，若果是类组件，执行 componentWillUnmount 生命周期等操作：
 
@@ -846,7 +846,7 @@ function commitUnmount(
 
 最终通过以上操作，react 就完成了 dom 的删除工作。
 
-# commitLayoutEffects
+## commitLayoutEffects
 
 接下来通过 `commitLayoutEffects` 为入口函数，执行第三次遍历，这里会遍历 effectList，执行 `componentDidMount`、`componentDidUpdate` 等生命周期，另外会执行 `componentUpdateQueue` 函数去执行回调函数。
 
@@ -885,7 +885,7 @@ function commitLayoutEffects(root: FiberRoot, committedLanes: Lanes) {
 }
 ```
 
-## 执行生命周期
+### 执行生命周期
 
 `commitLayoutEffectOnFiber` 调用了 `packages/react-reconciler/src/ReactFiberCommitWork.old.js` 路径下的 `commitLifeCycles` 函数，里面针对首次渲染和非首次渲染分别执行 `componentDidMount` 和 `componentDidUpdate` 生命周期，以及调用 `commitUpdateQueue` 去触发回调：
 
@@ -992,7 +992,7 @@ function commitLifeCycles(
 }
 ```
 
-## 处理回调
+### 处理回调
 
 处理回调是在 `commitUpdateQueue` 中做的，它会对 finishedQueue 上面的 effects 进行遍历，若有 callback，则执行 callback。同时会重置 finishedQueue 上面的 effects 为 null：
 
@@ -1024,7 +1024,7 @@ export function commitUpdateQueue<State>(
 
 在这之后就是进行最后一点变量还原等收尾工作，然后整个 commit 过程就完成了！
 
-# 总结
+## 总结
 
 接着第(4)章 [render 阶段](https://juejin.cn/post/7019254208830373902)的流程图，补充上 commit 阶段的流程图，就构成了完整的 react 执行图了：
 

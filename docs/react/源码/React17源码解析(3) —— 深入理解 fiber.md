@@ -8,11 +8,11 @@ react16 版本之后引入了 fiber，整个架构层面的 调度、协调、di
 > - fiber 节点结构中的属性
 > - fiber 树是如何构建与更新的
 
-# 为什么需要 fiber
+## 为什么需要 fiber
 
 Lin Clark 在 [React Conf 2017](http://conf2017.reactjs.org/speakers/lin) 的演讲中，他通过漫画的形式，很好地讲述了 fiber 为何出现，下面我根据她的演讲，结合我自己的理解来谈一谈 fiber 出现的原因。
 
-## fiber 之前
+### fiber 之前
 
 在 react15 及之前 fiber 未出现时，react 的一系列执行过程例如生命周期执行、虚拟 dom 的比较、dom 树的更新等都是同步的，一旦开始执行就不会中断，直到所有的工作流程全部结束为止。
 
@@ -21,7 +21,7 @@ Lin Clark 在 [React Conf 2017](http://conf2017.reactjs.org/speakers/lin) 的演
 这种情况下，函数堆栈的调用就像下图一样，层级很深，很长时间不会返回：
 <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8e6738e56dad4ecd935ba9ea40ef9ca6~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 
-## fiber 之后
+### fiber 之后
 
 为了解决这一问题，react 引入了 fiber 这种数据结构，将更新渲染耗时长的大任务，分为许多的小片。每个小片的任务执行完成后，都先去执行其他高优先级的任务(例如用户点击输入事件、动画等)，这样 js 的主线程就不会被 react 独占，虽然任务执行的总时间不变，但是页面能够及时响应高优先级任务，显得不会卡顿了。
 
@@ -29,7 +29,7 @@ fiber 分片模式下，浏览器主线程能够定期被释放，保证了渲�
 <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a96db90f08de4405a865b54c67e22e5f~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 react 通过 fiber，为我们提供了一种跟踪、调度、暂停和中止工作的便捷方式，保证了页面的性能和流畅度。
 
-# fiber 节点结构
+## fiber 节点结构
 
 fiber 是一种数据结构，每个 fiber 节点的内部，都保存了 dom 相关信息、fiber 树相关的引用、要更新时的副作用等，我们可以看一下[源码](https://github.com/facebook/react/blob/17.0.2/packages/react-reconciler/src/ReactInternalTypes.js)中的 fiber 结构：
 
@@ -91,11 +91,11 @@ export type Fiber = {|
 |};
 ```
 
-## dom 相关属性
+### dom 相关属性
 
 fiber 中和 dom 节点相关的信息主要关注 `tag`、`key`、`type` 和 `stateNode`。
 
-### tag
+#### tag
 
 fiber 中 `tag` 属性的 ts 类型为 workType，用于标记不同的 react 组件类型，我们可以看一下[源码](https://github.com/facebook/react/blob/17.0.2/packages/react-reconciler/src/ReactWorkTags.js)中 workType 的枚举值：
 
@@ -131,17 +131,17 @@ export const LegacyHiddenComponent = 24;
 
 在 react 协调时，beginWork 和 completeWork 等流程时，都会根据 `tag` 类型的不同，去执行不同的函数处理 fiber 节点。
 
-### key 和 type
+#### key 和 type
 
 `key` 和 `type` 两项用于 react diff 过程中确定 fiber 是否可以复用。
 
 `key` 为用户定义的唯一值。`type` 定义与此 fiber 关联的功能或类。对于组件，它指向函数或者类本身；对于 DOM 元素，它指定 HTML tag。
 
-### stateNode
+#### stateNode
 
 `stateNode`  用于记录当前  fiber  所对应的真实  dom  节点或者当前虚拟组件的实例，这么做的原因第一是为了实现  `Ref` ，第二是为了实现真实 dom  的跟踪。
 
-## 链表树相关属性
+### 链表树相关属性
 
 我们看一下和 fiber 链表树构建相关的 `return`、`child` 和 `sibling` 几个字段：
 
@@ -151,11 +151,11 @@ export const LegacyHiddenComponent = 24;
   通过这几个字段，各个 fiber 节点构成了 fiber 链表树结构：
   <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/dff49d5527094ed99d39f17618e9cbc1~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 
-## 副作用相关属性
+### 副作用相关属性
 
 首先理解一下 react 中的副作用，举一个生活中比较通俗的例子：我们感冒了本来吃点药就没事了，但是吃了药发现身体过敏了，而这个“过敏”就是副作用。react 中，我们修改了 state、props、ref 等数据，除了数据改变之外，还会引起 dom 的变化，这种 render 阶段不能完成的工作，我们称之为副作用。
 
-### flags
+#### flags
 
 react 中通过 flags 记录每个节点  diff  后需要变更的状态，例如 dom 的添加、替换、删除等等。我们可以看一下[源码](https://github.com/facebook/react/blob/17.0.2/packages/react-reconciler/src/ReactFiberFlags.js)中 Flags 枚举类型：
 
@@ -196,7 +196,7 @@ export const MountLayoutDev = /*               */ 0b010000000000000000;
 export const MountPassiveDev = /*              */ 0b100000000000000000;
 ```
 
-### Effect List
+#### Effect List
 
 在 render 阶段时，react 会采用深度优先遍历，对 fiber 树进行遍历，把每一个有副作用的 fiber 筛选出来，最后构建生成一个只带副作用的 Effect list 链表。和该链表相关的字段有 `firstEffect`、`nextEffect` 和 `lastEffect`：
 
@@ -206,11 +206,11 @@ export const MountPassiveDev = /*              */ 0b100000000000000000;
 
 在 commit 阶段，React 拿到 Effect list 链表中的数据后，根据每一个 fiber 节点的 flags 类型，对相应的 DOM 进行更改。
 
-## 其他
+### 其他
 
 其他需要重点关注一下的属性还有 `lane` 和 `alternate`。
 
-### lane
+#### lane
 
 `lane` 代表 react 要执行的 fiber 任务的优先级，通过这个字段，render 阶段 react 确定应该优先将哪些任务提交到 commit 阶段去执行。
 
@@ -242,16 +242,16 @@ export const OffscreenLane: Lane = /*                   */ 0b1000000000000000000
 
 优先级越低的任务，在 render 阶段越容易被打断，commit 执行的时机越靠后。
 
-### alternate
+#### alternate
 
 当 react 的状态发生更新时，当前页面所对应的 fiber 树称为 <b>current Fiber</b>，同时 react 会根据新的状态构建一颗新的 fiber 树，称为 <b>workInProgress Fiber</b>。current Fiber 中每个 fiber 节点通过 `alternate` 字段，指向 workInProgress Fiber 中对应的 fiber 节点。同样 workInProgress Fiber 中的 fiber
 节点的 `alternate` 字段也会指向 current Fiber 中对应的 fiber 节点。
 
-# fiber 树的构建与更新
+## fiber 树的构建与更新
 
 下面我们结合源码，来看一下实际工作过程中 fiber 树的构建与更新过程。
 
-## mount 过程
+### mount 过程
 
 react 首次 mount 开始执行时，以 `ReactDOM.render` 为入口函数，会经过如下一系列的函数调用：`ReactDOM.render` ——> `legacyRenderSubtreeIntoContainer` ——> `legacyCreateRootFromDOMContainer` ——> `createLegacyRoot` ——> `ReactDOMBlockingRoot` ——> `ReactDOMRoot` ——> `createRootImpl` ——> `createContainer` ——> `createFiberRoot` ——> `createHostRootFiber` ——> `createFiber`
 
@@ -322,7 +322,7 @@ react 对于 fiber 结构的创建和更新，都是采用深度优先遍历，�
 上面的过程，每个节点开始创建时，执行 `beginWork` 流程，直至该节点的所有子孙节点都创建(更新)完成后，执行 `completeWork` 流程，过程的图示如下：
 <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3fb11e0759914dbc9563637fbb17c199~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 
-## update 过程
+### update 过程
 
 update 时，react 会根据新的 jsx 内容创建新的 workInProgress fiber，还是通过深度优先遍历，对发生改变的 fiber 打上不同的 `flags` 副作用标签，并通过 `firstEffect`、`nextEffect` 等字段形成 Effect List 链表。
 
@@ -444,7 +444,7 @@ export function createWorkInProgress(current: Fiber, pendingProps: any): Fiber {
 
 <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5402ddc2fca140a9b52d9e5938c079f0~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 
-# 总结
+## 总结
 
 本章讲解了 fiber 出现的主要原因、fiber 节点中主要的属性以及 fiber 树是如何构建与更新的。
 

@@ -12,7 +12,7 @@ tag: ['react']
 > - React.createElement 源码
 > - React.Component 源码
 
-# jsx 的转换
+## jsx 的转换
 
 我们从 react 应用的入口开始对源码进行分析，创建一个简单的 hello, world 应用：
 
@@ -32,7 +32,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 另外我在第一次学习 react 的时候，就有一个疑惑： `import React, { Component } from 'react'` 这段代码中，`React` 似乎在代码中没有任何地方被用到，为什么要引入呢？
 
-## 16.x 版本及之前
+### 16.x 版本及之前
 
 我们在 react16.8 版本的代码中，尝试将 `React` 的引用去掉：
 
@@ -58,7 +58,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9b3a0d70e990495db713c5c7df020a98~tplv-k3u1fbpfcp-watermark.image?" width="100%">
 
-## 17.x 版本及之后
+### 17.x 版本及之后
 
 React17 版本之后，官方与 babel 进行了合作，直接通过将 `react/jsx-runtime` 对 jsx 语法进行了新的转换而不依赖 `React.createElement`，转换的结果便是可直接供 `ReactDOM.render` 使用的 ReactElement 对象。因此如果在 React17 版本后只是用 jsx 语法不使用其他的 react 提供的 api，可以不引入 `React`，应用程序依然能够正常运行。<br/>
 React17 中 jsx 语法的编译结果如下：
@@ -66,7 +66,7 @@ React17 中 jsx 语法的编译结果如下：
 
 更多有关于 React jsx 转换的内容可以去看官网了解：[介绍全新的 JSX 转换](https://zh-hans.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)，在这里就不再过多展开了。
 
-# React.createElement 源码
+## React.createElement 源码
 
 虽然现在 react17 之后我们可以不再依赖 `React.createElement` 这个 api 了，但是实际场景中以及很多开源包中可能会有很多通过 `React.createElement` 手动创建元素的场景，所以还是推荐学习一下[React.createElement 源码](https://github.com/facebook/react/blob/17.0.2/packages/react/src/ReactElement.js)。
 
@@ -241,7 +241,7 @@ export function createElement(type, config, children) {
 所以通过流程图总结一下 createElement 所做的事情如下：
 <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d5195bfc57b2438a9e34eee55573b48e~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 
-# React.Component 源码
+## React.Component 源码
 
 我们回到上述 hello,world 应用程序代码中，创建类组件时，我们继承了从 react 库中引入的 `Component`，我们再看一下[React.Component 源码](https://github.com/facebook/react/blob/17.0.2/packages/react/src/ReactBaseClasses.js)：
 
@@ -285,7 +285,7 @@ Component.prototype.forceUpdate = function (callback) {
 - 在 Component 原型链上添加 `forceUpdate` 方法
   这样我们就理解了 react 类组件的 `super()` 作用，以及 `this.setState` 和 `this.forceUpdate` 的由来
 
-# 总结
+## 总结
 
 本章讲述了 jsx 在 react17 之前和之后的不同的转换，实际上 react17 之后 babel 的对 jsx 的转换就是比之前多了一步 `React.createElement` 的动作：
 <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/19eedac5735143e4a9ffab251f136f6a~tplv-k3u1fbpfcp-watermark.image?" width="100%" />

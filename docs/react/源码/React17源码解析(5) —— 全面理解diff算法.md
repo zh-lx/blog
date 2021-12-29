@@ -14,7 +14,7 @@ tag: ['react']
 
 上一章中 react 的 render 阶段，其中 `begin` 时会调用 `reconcileChildren`  函数， `reconcileChildren` 中做的事情就是 react 知名的 diff 过程，本章会对 diff 算法进行讲解。
 
-# diff 算法介绍
+## diff 算法介绍
 
 react 的每次更新，都会将新的 ReactElement 内容与旧的 fiber 树作对比，比较出它们的差异后，构建新的 fiber 树，将差异点放入更新队列之中，从而对真实 dom 进行 render。简单来说就是如何通过最小代价将旧的 fiber 树转换为新的 fiber 树。
 
@@ -22,7 +22,7 @@ react 的每次更新，都会将新的 ReactElement 内容与旧的 fiber 树�
 
 因此，想要将 diff 应用于 virtual dom 中，必须实现一种高效的 diff 算法。React 便通过制定了一套大胆的策略，实现了 O(n) 的时间复杂度更新 virtual dom。
 
-# diff 策略
+## diff 策略
 
 react 将 diff 算法优化到 O(n) 的时间复杂度，基于了以下三个前提策略：
 
@@ -48,7 +48,7 @@ A 子树从 root 节点下到了 B 节点下，在 react diff 过程中并不会
 2. 在 B 节点下创建 A 子节点
 3. 在新创建的 A 子节点下创建 C、D 节点
 
-## component diff
+### component diff
 
 对于组件之间的比较，只要它们的类型不同，就判断为它们是两棵不同的树形结构，直接会将它们给替换掉。
 
@@ -63,7 +63,7 @@ A 子树从 root 节点下到了 B 节点下，在 react diff 过程中并不会
 
 虽然如果在本例中改变类型复用子元素性能会更高一点，但是在时机应用开发中类型不一致子内容完全一致的情况极少，对这种情况过多判断反而会增加时机复杂度，降低平均性能。
 
-## element diff
+### element diff
 
 react 对于同层级的元素进行比较时，会通过 key 对元素进行比较以识别哪些元素可以稳定的渲染。同级元素的比较存在<b>插入</b>、<b>删除</b>和<b>移动</b>三种操作。
 
@@ -78,9 +78,9 @@ react 对于同层级的元素进行比较时，会通过 key 对元素进行比
 
 <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1e40065903a24a758f72b3a2afbd5e34~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 
-# 结合源码看 diff
+## 结合源码看 diff
 
-## 整体流程
+### 整体流程
 
 diff 算法从 `reconcileChildren` 函数开始，根据当前 fiber 是否存在，决定是直接渲染新的 ReactElement 内容还是与当前 fiber 去进行 Diff，看一下其[源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberBeginWork.new.js)：
 
@@ -213,7 +213,7 @@ function reconcileChildFibers(
 所以根据 ReactElement 类型走的不同流程如下：
 <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a7a867d036fb4cd7bc7c5092de0ce2c8~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 
-## 新内容为 REACT_ELEMENT_TYPE
+### 新内容为 REACT_ELEMENT_TYPE
 
 当新创建的节点 type 为 object 时，我们看一下其为 `REACT_ELEMENT_TYPE` 类型的 diff，即 `placeSingleChild(reconcileSingleElement(...))` 函数。
 
@@ -329,7 +329,7 @@ function placeSingleChild(newFiber: Fiber): Fiber {
 所以对于 REACT_ELEMENT_TYPE 类型的 diff 总结如下：
 <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/64a4ace349ad4d6db1e21d1efb078a7b~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 
-## 新内容为纯文本类型
+### 新内容为纯文本类型
 
 当新创建节点的 typeof 为 string 或者 number 时，表示是纯文本节点，使用 `placeSingleChild(reconcileSingleTextNode(...))` 函数进行 diff。
 
@@ -366,7 +366,7 @@ function reconcileSingleTextNode(
 所以对文本类型 diff 的流程如下：
 <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c96ba9ea85eb4083b85d3b3c554c9669~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 
-## 新内容为数组类型
+### 新内容为数组类型
 
 上面所说的两种情况，都是一个或多个子 fiebr 变成单个 fiber。新内容为数组类型时，意味着要将一个或多个子 fiber 替换为多个 fiber，内容相对复杂，我们看一下 `reconcileChildrenArray` 的[源码](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactChildFiber.old.js)：
 
@@ -522,7 +522,7 @@ function reconcileChildrenArray(
 所以整体的流程如下：
 <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/dfd0cc7eddf34620b73046cc685e8237~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 
-# diff 后的渲染
+## diff 后的渲染
 
 diff 流程结束后，会形成新的 fiber 链表树，链表树上的 fiber 通过 flags 字段做了副作用标记，主要有以下几种：
 

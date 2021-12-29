@@ -8,11 +8,11 @@ tag: ['react']
 
 本文将讲解 hooks 的执行过程以及常用的 hooks 的源码。
 
-## hooks 相关数据结构
+### hooks 相关数据结构
 
 要理解 hooks 的执行过程，首先想要大家对 hooks 相关的数据结构有所了解，便于后面大家顺畅地阅读代码。
 
-### Hook
+#### Hook
 
 每一个 hooks 方法都会生成一个类型为 Hook 的对象，用来存储一些信息，前面提到过函数组件 fiber 中的 memoizedState 会存储 hooks 链表，每个链表结点的结构就是 Hook。
 
@@ -59,7 +59,7 @@ const [age, setAge] = useState(23);
 - useMemo/useCallback: [callback, deps]
 - useRef: { current: xxx }
 
-### Update & UpdateQueue
+#### Update & UpdateQueue
 
 Update 和 UpdateQueue 是存储 `useState` 的 state 及 `useReducer` 的 reducer 相关内容的数据结构。
 
@@ -124,7 +124,7 @@ setName('大科比');
 
 最后 react 会遍历 UpdateQueue 中的每个 Update 去进行更新。
 
-### Effect
+#### Effect
 
 Effect 结构是和 `useEffect` 等 hooks 相关的，我们看一下它的结构：
 
@@ -168,11 +168,11 @@ useEffect(() => {
 }
 ```
 
-## 执行过程
+### 执行过程
 
 下面我们探索一下 hooks 在 react 中具体的执行流程。
 
-### 引入 hooks
+#### 引入 hooks
 
 我们以一个简单的 hooks 写法的 react 应用程序为例去寻找 hooks 源码:
 
@@ -233,7 +233,7 @@ export default ReactCurrentDispatcher;
 
 到这里我们的线索就断了，`ReactCurrentDispatcher` 上只有一个 current 用于挂在 hooks，但是 hooks 的详细源码以及 `ReactCurrentDispatcher` 的具体内容我们并没有找到在哪里，所以我们只能另寻出路，从 react 的执行过程去入手。
 
-### 函数组件更新过程
+#### 函数组件更新过程
 
 我们的 hooks 都是在函数组件中使用的，所以让我们去看一下 render 过程关于函数组件的更新。render 过程中的调度是从 `beginWork` 开始的，来到 `beginWork` 的源码后我们可以发现，针对函数组件的渲染和更新，使用了 `updateFunctionComponent` 函数：
 
@@ -291,7 +291,7 @@ function updateFunctionComponent(
 }
 ```
 
-### renderWithHooks
+#### renderWithHooks
 
 费劲千辛万苦，我们终于来到了函数组件更新过程的执行入口 —— `renderWithHooks` 函数的源码：
 
@@ -367,7 +367,7 @@ export function renderWithHooks<Props, SecondArg>(
 
 最后会重置一些变量，并返回函数组件执行后的 jsx。
 
-### 不同阶段更新 Hook
+#### 不同阶段更新 Hook
 
 现在我们终于找到了 `ReactCurrentDispatcher.current` 的定义，首次渲染时，会将 `HooksDispatcherOnMount` 赋值给 `ReactCurrentDispatcher.current`，更新时，会将 `HooksDispatcherOnUpdate` 赋值给 `ReactCurrentDispatcher.current`， dispatcher 上面挂在了各种 hooks：
 
@@ -419,7 +419,7 @@ const HooksDispatcherOnUpdate: Dispatcher = {
 
 首次渲染时，`HooksDispatcherOnMount` 上挂载的 hook 都是 mountXXX，而更新时 `HooksDispatcherOnMount` 上挂在的 hook 都是 updateXXX。所有 mount 阶段的 hook 中，都会执行 `mountWorkInProgressHook` 这个函数，而所有 update 阶段的 hook 中，都会执行 `updateWorkInProgressHook` 这个函数。下面我们来看下这两个函数分别做了什么。
 
-#### mountWorkInProgressHook
+##### mountWorkInProgressHook
 
 每个 hooks 方法中，都需要有一个 Hook 结构来存储相关信息。`mountWorkInProgressHook` 中，会初始化创建一个 fiber，然后将其挂载到 workInProgress fiber 的 memoizedState 所指向的 hooks 链表上，以便于下次 update 的时候取出该 Hook：
 
@@ -448,7 +448,7 @@ function mountWorkInProgressHook(): Hook {
 }
 ```
 
-#### updateWorkInProgressHook
+##### updateWorkInProgressHook
 
 `updateWorkInProgressHook` 的作用主要是取出 current fiber 中的 hooks 链表中对应的 hook 节点，挂载到 workInProgress fiber 上的 hooks 链表：
 
@@ -525,20 +525,20 @@ function updateWorkInProgressHook(): Hook {
 
 这里正好提到，为什么 hook 不能用在条件语句中，因为如果前后两次渲染的条件判断不一致时，会导致 current fiber 和 workInProgress fiber 的 hooks 链表结点无法对齐。
 
-### 总结
+#### 总结
 
 所以我们总结一下 `renderWithHooks` 这个函数，它所做的事情如下：
 <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ba2098cb979b4676a91b9eeb634101e5~tplv-k3u1fbpfcp-watermark.image?" width="60%">
 
-## hooks 源码
+### hooks 源码
 
 前面 hooks 的执行入口我们都找到了，现在我们看一下常用的一些 hooks 源码。
 
-### useState & useReducer
+#### useState & useReducer
 
 这里会把 useState 和 useReducer 放在一起来说，因为 useState 相当于一个简化版的 useReducer。
 
-#### 用法
+##### 用法
 
 useState 的简单用法如下：
 
@@ -563,7 +563,7 @@ const [count, dispatch] = useReducer(function reducer(state, action) {
 dispatch({ type: 'increment' });
 ```
 
-#### mountState & mountReducer
+##### mountState & mountReducer
 
 我们先从 useState 开始讲起，mount 阶段，`useState` 对应的源码是 `mountState`。这里面后创建初始的 hook 和更新队列 queue，然后创建 dispatch，最终返回 `[hook.memoizedState, dispatch]`，对应的是我们代码中的 `[count, setCount]`，供我们使用：
 
@@ -634,7 +634,7 @@ function mountReducer<S, I, A>(
 }
 ```
 
-#### dispatchAction
+##### dispatchAction
 
 上面的代码中，其他内容我们前面基本都有讲过，你们应该了解它们的作用，我们着重来看一下 dispatch，它是通过执行 `dispatchAction` 创建的。
 
@@ -730,7 +730,7 @@ function dispatchAction<S, A>(
 - 如果是 render 阶段发生，那么会触发 re-render 过程，将 `didScheduleRenderPhaseUpdateDuringThisPass` 置为 true。前面 `renderWithHooks` 的代码中我们说了，`didScheduleRenderPhaseUpdateDuringThisPass` 为 true 时会代表 re-render，会重新执行 render 过程，直至其为 false。
 - 如果不是在 render 阶段发生，那么会通过当前的 state 和 action 来判断下次渲染的 state 的值，并与当前 state 的值进行比较，如果两个值一致，则不需要更新，跳过更新过程；如果两个值不一致，调用 `scheduleUpdateOnFiber` 开始调度，触发新一轮更新。
 
-#### updateReducer
+##### updateReducer
 
 update 时，`useState` 和 `useReducer` 就更没什么区别了，`updateState` 就是直接返回了 `updateReducer` 函数，所以我们直接看 `updateReducer` 的源码就可以。
 
@@ -877,16 +877,16 @@ function updateReducer<S, I, A>(
 }
 ```
 
-#### 总结
+##### 总结
 
 总结一下 `useState` 和 `useReducer` 的执行过程如下图：
 <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6f1dcf1c1676467291b8c7edf7546d6b~tplv-k3u1fbpfcp-watermark.image?" width="100%">
 
-### useEffect
+#### useEffect
 
 同样，我们也分为 mount 和 update 两种情况来看 useEffect。
 
-#### 用法
+##### 用法
 
 `useEffect` 的使用大家应该都了解，在这里就不赘述了，我们本次的用例如下：
 
@@ -899,7 +899,7 @@ useEffect(() => {
 }, [count]);
 ```
 
-#### mountEffect
+##### mountEffect
 
 mount 阶段 `useEffect` 实际上是调用了 `mountEffect` 方法，进一步通过传递参数调用了 `mountEffectImpl` 这个函数：
 
@@ -940,7 +940,7 @@ function mountEffectImpl(fiberFlags, hookFlags, create, deps): void {
 }
 ```
 
-#### pushEffect
+##### pushEffect
 
 `pushEffect` 函数中主要做了两件事，创建 effect 对象，然后将其添加到 fiber 的 updateQueue 链表上：
 
@@ -980,7 +980,7 @@ function pushEffect(tag, create, destroy, deps) {
 }
 ```
 
-#### updateEffect
+##### updateEffect
 
 update 阶段，`useEffect` 实际上是调用了 `updateEffect` 函数，同样是进一步调用了 `updateEffectImpl` 函数：
 
@@ -1041,12 +1041,12 @@ function updateEffectImpl(fiberFlags, hookFlags, create, deps): void {
 }
 ```
 
-#### 总结
+##### 总结
 
 总结一下 `useEffect` 的大体流程如下：
 <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/15ac0841f23949d3a516516c6e150aa7~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
 
-### useRef
+#### useRef
 
 `useRef` 的代码十分的简单了，我们直接将 mount 阶段和 update 阶段的放到一起来看：
 
@@ -1073,11 +1073,11 @@ update 阶段，调用 `updateRef` 函数，通过 `updateWorkInProgressHook` �
 
 可以看到 `hook.memoizedState` 指向的是一个对象的引用，这就解释了我们可以直接通过 `ref.current` 去改变和获取最新的值，不必进行任何依赖注入。
 
-### useCallback & useMemo
+#### useCallback & useMemo
 
 `useCallback` 和 `useMemo` 也是一样，源码结构上十分相似，所以也放在一起来讲。
 
-#### 用法
+##### 用法
 
 基础用法如下：
 
@@ -1093,7 +1093,7 @@ const callback = useCallback(() => {
 }, [a, b]);
 ```
 
-#### mount 阶段
+##### mount 阶段
 
 mount 时，分别调用了 `mountCallback` 和 `mountMemo` 函数，两者都通过 `mountWorkInProgressHook` 方法创建 hook 添加到了 hooks 链表中。不同的是，`mountCallback` 的 memoizedState 是 `[callback, nextDeps]`，并且返回的是其第一个参数；`mountMemo` 的 memoizedState 是 `[nextValue, nextDeps]`，返回的也是 `nextValue` 也就是其第一个参数的执行结果。
 
@@ -1123,7 +1123,7 @@ function mountMemo<T>(
 }
 ```
 
-#### update 阶段
+##### update 阶段
 
 update 时，分别调用了 `updateCallback` 和 `updateMemo` 函数，它们都通过 `updateWorkInProgressHook` 取出对应的 hook，若依赖项未发生改变，则取上一轮的 callback 或者 value 返回；若依赖项发生改变，则重新赋值 hook.memoizedState 并返回新的 callback 或新计算的 value：
 
@@ -1173,6 +1173,6 @@ function updateMemo<T>(
 }
 ```
 
-## 结语
+### 结语
 
 本章讲解了 react hooks 的源码，理解了 hooks 的设计思想和工作过程。其他 hook 平时用的比较少，就不在这里展开讲了，但通过上面几个 hook 的源码讲解，其他 hook 看源码你应该也能看得懂。

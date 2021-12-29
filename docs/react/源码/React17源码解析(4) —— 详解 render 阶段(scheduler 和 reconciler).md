@@ -9,11 +9,11 @@ tag: ['react']
 > - reconciler 过程同步和异步遍历及执行任务
 > - scheduler 是如何实现帧空闲时间调度任务以及中断任务的
 
-# 触发更新
+## 触发更新
 
 触发更新的方式主要有以下几种：`ReactDOM.render`、`setState`、`forUpdate` 以及 hooks 中的 `useState` 等，关于 hooks 的我们后面再详细讲解，这里先关注前三种情况。
 
-## ReactDOM.render
+### ReactDOM.render
 
 `ReactDOM.render` 作为 react 应用程序的入口函数，在页面首次渲染时便会触发，页面 dom 的首次创建，也属于触发 react 更新的一种情况。其整体流程如下：
 
@@ -122,7 +122,7 @@ export function updateContainer(
 }
 ```
 
-## setState
+### setState
 
 setState 时类组件中我们最常用的修改状态的方法，状态修改会触发更新流程，其执行过程如下：
 
@@ -178,7 +178,7 @@ const classComponentUpdater = {
 };
 ```
 
-## forceUpdate
+### forceUpdate
 
 `forceUpdate` 的流程与 `setState` 几乎一模一样：
 
@@ -218,11 +218,11 @@ const classComponentUpdater = {
 };
 ```
 
-# 创建更新任务
+## 创建更新任务
 
 可以发现，上述的三种触发更新的动作，最后殊途同归，都会走上述流程图中从 `requestEventTime` 到 `scheduleUpdateOnFiber` 这一流程，去创建更新任务，先我们详细看下更新任务是如何创建的。
 
-## 获取更新触发时间
+### 获取更新触发时间
 
 前面的文章中我们讲到过，react 执行更新过程中，会将更新任务拆解，每一帧优先执行高优先级的任务，从而保证用户体验的流畅。那么即使对于同样优先级的任务，在任务多的情况下该优先执行哪一些呢？
 
@@ -281,7 +281,7 @@ export const now =
 2. 当 currentEventTime 不等于 NoTimestamp 时，则判断其正在执行浏览器事件，react 想要同样优先级的更新任务保持相同的时间，所以直接返回上次的 currentEventTime
 3. 如果是 react 上次中断之后的首次更新，那么给 currentEventTime 赋一个新的值
 
-## 划分更新任务优先级
+### 划分更新任务优先级
 
 说完了相同优先级任务的触发时间，那么任务的优先级又是如何划分的呢？这里就要提到 `requestUpdateLane`，我们来看一下其源码：
 
@@ -344,7 +344,7 @@ const OffscreenLanePriority: LanePriority = 1;
 export const NoLanePriority: LanePriority = 0;
 ```
 
-## 创建更新对象
+### 创建更新对象
 
 eventTime 和 lane 都创建好了之后，就该创建更新了，`createUpdate` 就是基于上面两个方法所创建的 eventTime 和 lane，去创建一个更新对象：
 
@@ -366,7 +366,7 @@ export function createUpdate(eventTime: number, lane: Lane): Update<*> {
 }
 ```
 
-## 关联 fiber 的更新队列
+### 关联 fiber 的更新队列
 
 创建好了 update 对象之后，紧接着调用 `enqueueUpdate` 方法把 update 对象放到 关联的 fiber 的 updateQueue 队列之中：
 
@@ -397,11 +397,11 @@ export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
 }
 ```
 
-# reconciler 过程
+## reconciler 过程
 
 上面的更新任务创建好了并且关联到了 fiber 上，下面就该到了 react render 阶段的核心之一 —— reconciler 阶段。
 
-## 根据任务类型执行不同更新
+### 根据任务类型执行不同更新
 
 reconciler 阶段会协调任务去执行，以 `scheduleUpdateOnFiber` 为入口函数，首先会调用 `checkForNestedUpdates` 方法，检查嵌套的更新数量，若嵌套数量大于 50 层时，被认为是循环更新（无限更新）。此时会抛出异常，避免了例如在类组件 render 函数中调用了 setState 这种死循环的情况。
 
@@ -463,7 +463,7 @@ export function scheduleUpdateOnFiber(
 
 然后会根据任务类型以及当前线程所处的 react 执行阶段，去判断进行何种类型的更新：
 
-### 执行同步更新
+#### 执行同步更新
 
 当任务的类型为同步任务，并且当前的 js 主线程空闲（没有正在执行的 react 任务时），会通过 `performSyncWorkOnRoot(root)` 方法开始执行同步任务。
 
@@ -530,13 +530,13 @@ function ensureRootIsScheduled(root: FiberRoot, currentTime: number) {
 
 `ensureRootIsScheduled` 方法中，会先看加入了新的任务后根节点任务优先级是否有变更，如果无变更，说明新的任务会被当前的 schedule 一同执行；如果有变更，则创建新的 schedule，然后也是调用`performSyncWorkOnRoot(root)` 方法开始执行同步任务。
 
-### 执行可中断更新
+#### 执行可中断更新
 
 当任务的类型不是同步类型时，react 也会执行 `ensureRootIsScheduled` 方法，因为是异步任务，最终会执行 `performConcurrentWorkOnRoot` 方法，去进行可中断的更新，下面会详细讲到。
 
-## workLoop
+### workLoop
 
-### 同步
+#### 同步
 
 以同步更新为例，`performSyncWorkOnRoot` 会经过以下流程，`performSyncWorkOnRoot` ——> `renderRootSync` ——> `workLoopSync`。
 
@@ -552,7 +552,7 @@ function workLoopSync() {
 }
 ```
 
-### 可中断
+#### 可中断
 
 可中断模式下，`performConcurrentWorkOnRoot` 会执行以下过程：`performConcurrentWorkOnRoot` ——> `renderRootConcurrent` ——> `workLoopConcurrent`。
 
@@ -568,7 +568,7 @@ function workLoopConcurrent() {
 }
 ```
 
-## performUnitOfWork
+### performUnitOfWork
 
 最终无论是同步执行任务，还是可中断地执行任务，都会进入 `performUnitOfWork` 函数中。
 
@@ -603,7 +603,7 @@ function performUnitOfWork(unitOfWork: Fiber): void {
 }
 ```
 
-### beginWork
+#### beginWork
 
 `beginWork` 是根据当前执行环境，封装调用了 `originalBeginWork` 函数：
 
@@ -681,7 +681,7 @@ function updateHostRoot(current, workInProgress, renderLanes) {
 
 `reconcileChildren` 做的事情就是 react 的另一核心之一 —— diff 过程，在下一篇文章中会详细讲。
 
-### completeUnitOfWork
+#### completeUnitOfWork
 
 当 workInProgress 为 null 时，也就是当前任务的 fiber 树遍历完之后，就进入到了 `completeUnitOfWork` 函数。
 
@@ -729,9 +729,9 @@ function completeUnitOfWork(unitOfWork: Fiber): void {
 }
 ```
 
-# scheduler
+## scheduler
 
-## 实现帧空闲调度任务
+### 实现帧空闲调度任务
 
 刚刚上面说到了在执行可中断的更新时，浏览器会在每一帧空闲时刻去执行 react 更新任务，那么空闲时刻去执行是如何实现的呢？我们很容易联想到一个 api —— requestIdleCallback。但由于 requestIdleCallback 的兼容性问题以及 react 对应部分高优先级任务可能牺牲部分帧的需要，react 通过自己实现了类似的功能代替了 requestIdleCallback。
 
@@ -830,7 +830,7 @@ requestHostCallback = function (callback) {
 };
 ```
 
-## 任务中断
+### 任务中断
 
 前面说到可中断模式下的 workLoop，每次遍历执行 performUnitOfWork 前会先判断 `shouYield` 的值
 
@@ -855,7 +855,7 @@ export function unstable_shouldYield() {
 
 `getCurrentTime` 获取的是当前的时间戳，deadline 上面讲到了是浏览器每一帧结束的时间戳。也就是说 concurrent 模式下，react 会将这些非同步任务放到浏览器每一帧空闲时间段去执行，若每一帧结束未执行完，则中断当前任务，待到浏览器下一帧的空闲再继续执行。
 
-# 总结
+## 总结
 
 总结一下 react render 阶段的设计思想：
 

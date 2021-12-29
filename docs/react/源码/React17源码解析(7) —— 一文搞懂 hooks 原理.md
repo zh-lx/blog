@@ -1,21 +1,16 @@
 ---
 tag: ['react']
 ---
-
 欢迎大家一起交流学习 react 源码，本系列导航请见：[React17 源码解析(开篇) —— 搭建 react 源码调试环境](https://juejin.cn/post/7014775797596553230/)
 
 <hr />
 
 本文将讲解 hooks 的执行过程以及常用的 hooks 的源码。
 
-### hooks 相关数据结构
-
+## hooks 相关数据结构
 要理解 hooks 的执行过程，首先想要大家对 hooks 相关的数据结构有所了解，便于后面大家顺畅地阅读代码。
-
-#### Hook
-
+### Hook
 每一个 hooks 方法都会生成一个类型为 Hook 的对象，用来存储一些信息，前面提到过函数组件 fiber 中的 memoizedState 会存储 hooks 链表，每个链表结点的结构就是 Hook。
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -27,16 +22,12 @@ export type Hook = {|
   next: Hook | null, // 指向下一个 hook，形成链表结构
 |};
 ```
-
 举个例子，我们通过函数组件使用了两个 `useState` hooks：
-
 ```ts
 const [name, setName] = useState('小科比');
 const [age, setAge] = useState(23);
 ```
-
 则实际的 Hook 结构如下：
-
 ```ts
 {
   memoizedState: '小科比',
@@ -51,18 +42,13 @@ const [age, setAge] = useState(23);
   },
 };
 ```
-
 不同的 hooks 方法，memoizedState 存储的内容不同，常用的 hooks memoizedState 存储的内容如下：
-
 - useState: state
 - useEffect: effect 对象
 - useMemo/useCallback: [callback, deps]
 - useRef: { current: xxx }
-
-#### Update & UpdateQueue
-
+### Update & UpdateQueue
 Update 和 UpdateQueue 是存储 `useState` 的 state 及 `useReducer` 的 reducer 相关内容的数据结构。
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -91,18 +77,14 @@ type UpdateQueue<S, A> = {|
   lastRenderedState: S | null,
 |};
 ```
-
 每次调用 `setState` 或者 `useReducer` 的 dispatch 时，都会生成一个 Update 类型的对象，并将其添加到 UpdateQueue 队列中。
 
 例如，在如下的函数组件中:
-
 ```ts
 const [name, setName] = useState('小科比');
 setName('大科比');
 ```
-
 当我们点击 input 按钮时，执行了 `setName()`，此时对应的 hook 结构如下：
-
 ```ts
 {
   memoizedState: '小科比',
@@ -121,13 +103,9 @@ setName('大科比');
   next: null,
 };
 ```
-
 最后 react 会遍历 UpdateQueue 中的每个 Update 去进行更新。
-
-#### Effect
-
+### Effect
 Effect 结构是和 `useEffect` 等 hooks 相关的，我们看一下它的结构：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -139,9 +117,7 @@ export type Effect = {|
   next: Effect, // 下一个要执行的 Effect
 |};
 ```
-
 当我们的函数组件中使用了如下的 `useEffect` 时：
-
 ```ts
 useEffect(() => {
   console.log('hello');
@@ -150,9 +126,7 @@ useEffect(() => {
   };
 }, []);
 ```
-
 对应的 Hook 如下：
-
 ```ts
 {
   memoizedState: {
@@ -167,15 +141,10 @@ useEffect(() => {
   next: null,
 }
 ```
-
-### 执行过程
-
+## 执行过程
 下面我们探索一下 hooks 在 react 中具体的执行流程。
-
-#### 引入 hooks
-
+### 引入 hooks
 我们以一个简单的 hooks 写法的 react 应用程序为例去寻找 hooks 源码:
-
 ```ts
 import { useState } from 'react';
 
@@ -195,9 +164,7 @@ export default function App() {
   );
 }
 ```
-
 根据引入的 `useState` api，我们找到 react hooks 的入口文件：
-
 ```ts
 // packages/react/src/ReactHooks.js
 
@@ -208,7 +175,7 @@ function resolveDispatcher() {
 }
 
 export function useState<S>(
-  initialState: (() => S) | S
+  initialState: (() => S) | S,
 ): [S, Dispatch<BasicStateAction<S>>] {
   const dispatcher = resolveDispatcher();
   return dispatcher.useState(initialState);
@@ -216,9 +183,7 @@ export function useState<S>(
 
 // ...
 ```
-
 根据上面的源码我们可以知道，所有的 hooks api 都是挂载在 `resolveDispatcher` 中返回的 dispatcher 对象上面的，也就是挂载在 `ReactCurrentDispatcher.current` 上面，那么我们再继续去看一下 `ReactCurrentDispatcher` 是什么：
-
 ```ts
 // packages/react/src/ReactCurrentDispatcher.js
 
@@ -230,20 +195,17 @@ const ReactCurrentDispatcher = {
 
 export default ReactCurrentDispatcher;
 ```
-
 到这里我们的线索就断了，`ReactCurrentDispatcher` 上只有一个 current 用于挂在 hooks，但是 hooks 的详细源码以及 `ReactCurrentDispatcher` 的具体内容我们并没有找到在哪里，所以我们只能另寻出路，从 react 的执行过程去入手。
 
-#### 函数组件更新过程
-
+### 函数组件更新过程
 我们的 hooks 都是在函数组件中使用的，所以让我们去看一下 render 过程关于函数组件的更新。render 过程中的调度是从 `beginWork` 开始的，来到 `beginWork` 的源码后我们可以发现，针对函数组件的渲染和更新，使用了 `updateFunctionComponent` 函数：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberBeginWork.old.js
 
 function beginWork(
   current: Fiber | null,
   workInProgress: Fiber,
-  renderLanes: Lanes
+  renderLanes: Lanes,
 ): Fiber | null {
   // ...
   switch (workInProgress.tag) {
@@ -255,7 +217,7 @@ function beginWork(
         workInProgress,
         Component,
         resolvedProps,
-        renderLanes
+        renderLanes,
       );
     }
     // ...
@@ -263,9 +225,7 @@ function beginWork(
   // ...
 }
 ```
-
 那我们在继续看一下 `updateFunctionComponent` 函数的源码，里面调用了 `renderWithHooks` 函数，这便是函数组件更新和渲染过程执行的入口：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberBeginWork.old.js
 
@@ -274,27 +234,24 @@ function updateFunctionComponent(
   workInProgress,
   Component,
   nextProps: any,
-  renderLanes
+  renderLanes,
 ) {
   // ...
-
+  
   nextChildren = renderWithHooks(
-    current,
-    workInProgress,
-    Component,
-    nextProps,
-    context,
-    renderLanes
-  );
-
+      current,
+      workInProgress,
+      Component,
+      nextProps,
+      context,
+      renderLanes,
+    );
+  
   // ...
 }
 ```
-
-#### renderWithHooks
-
+### renderWithHooks
 费劲千辛万苦，我们终于来到了函数组件更新过程的执行入口 —— `renderWithHooks` 函数的源码：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberBeginWork.old.js
 
@@ -314,7 +271,7 @@ export function renderWithHooks<Props, SecondArg>(
   workInProgress.memoizedState = null;
   workInProgress.updateQueue = null;
   workInProgress.lanes = NoLanes;
-
+  
   // ...
   // 根据是否首次渲染，分别将 HooksDispatcherOnMount 和 HooksDispatcherOnUpdate 赋值给 ReactCurrentDispatcher.current
   ReactCurrentDispatcher.current =
@@ -324,7 +281,7 @@ export function renderWithHooks<Props, SecondArg>(
 
   // 执行函数组件的构造函数
   let children = Component(props, secondArg);
-
+  
   if (didScheduleRenderPhaseUpdateDuringThisPass) {
     // didScheduleRenderPhaseUpdateDuringThisPass 为 true 说明发生了 re-render，会再次执行 render
     let numberOfReRenders: number = 0;
@@ -338,7 +295,7 @@ export function renderWithHooks<Props, SecondArg>(
       children = Component(props, secondArg);
     } while (didScheduleRenderPhaseUpdateDuringThisPass);
   }
-
+  
   // ...
   // 函数执行结束后，关闭 hooks 入口
   ReactCurrentDispatcher.current = ContextOnlyDispatcher;
@@ -358,7 +315,6 @@ export function renderWithHooks<Props, SecondArg>(
   return children;
 }
 ```
-
 `renderWithHooks` 函数中首先会将 workInProgress fiber 树的 memoizedState（前面[深入理解 fiber](https://juejin.cn/post/7016512949330116645) 一文中提到过，memoizedState 记录了当前页面的 state，在函数组件中，它以链表的形式记录了 hooks 信息） 和 updateQueue 置为 null，在接下来的函数组件执行过程中，会把新的 hooks 信息挂载到这两个属性上，然后在 commit 阶段，会将根据 current fiber 树构建当前的 workInProgress fiber 树，并保存 hooks 信息，用于替换真实的 DOM 元素节点。
 
 然后会通过 current 上是否有 memoizedState，判断组件是否首次渲染，从而分别将 HooksDispatcherOnMount 和 HooksDispatcherOnUpdate 赋值给 `ReactCurrentDispatcher.current`。
@@ -367,10 +323,8 @@ export function renderWithHooks<Props, SecondArg>(
 
 最后会重置一些变量，并返回函数组件执行后的 jsx。
 
-#### 不同阶段更新 Hook
-
+### 不同阶段更新Hook
 现在我们终于找到了 `ReactCurrentDispatcher.current` 的定义，首次渲染时，会将 `HooksDispatcherOnMount` 赋值给 `ReactCurrentDispatcher.current`，更新时，会将 `HooksDispatcherOnUpdate` 赋值给 `ReactCurrentDispatcher.current`， dispatcher 上面挂在了各种 hooks：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -416,13 +370,10 @@ const HooksDispatcherOnUpdate: Dispatcher = {
   unstable_isNewReconciler: enableNewReconciler,
 };
 ```
-
 首次渲染时，`HooksDispatcherOnMount` 上挂载的 hook 都是 mountXXX，而更新时 `HooksDispatcherOnMount` 上挂在的 hook 都是 updateXXX。所有 mount 阶段的 hook 中，都会执行 `mountWorkInProgressHook` 这个函数，而所有 update 阶段的 hook 中，都会执行 `updateWorkInProgressHook` 这个函数。下面我们来看下这两个函数分别做了什么。
 
-##### mountWorkInProgressHook
-
+#### mountWorkInProgressHook
 每个 hooks 方法中，都需要有一个 Hook 结构来存储相关信息。`mountWorkInProgressHook` 中，会初始化创建一个 fiber，然后将其挂载到 workInProgress fiber 的 memoizedState 所指向的 hooks 链表上，以便于下次 update 的时候取出该 Hook：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -447,17 +398,14 @@ function mountWorkInProgressHook(): Hook {
   return workInProgressHook;
 }
 ```
-
-##### updateWorkInProgressHook
-
+#### updateWorkInProgressHook
 `updateWorkInProgressHook` 的作用主要是取出 current fiber 中的 hooks 链表中对应的 hook 节点，挂载到 workInProgress fiber 上的 hooks 链表：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
 function updateWorkInProgressHook(): Hook {
   let nextCurrentHook: null | Hook;
-
+  
   // 迭代 current fiber 链表
   if (currentHook === null) {
     // 若 current 为 null，从 currentlyRenderingFiber.alternate 取 current
@@ -516,57 +464,45 @@ function updateWorkInProgressHook(): Hook {
       workInProgressHook = workInProgressHook.next = newHook;
     }
   }
-
+  
   return workInProgressHook;
 }
 ```
-
 我们详细理解一下上述代码，前面我们提到过 `renderWithHooks` 函数中会执行如下代码： `workInProgress.memoizedState = null`，所以在执行上述函数时，正常来说 `currentlyRenderingFiber.memoizedState` 为 null，需要从 current fiber 对应的节点中取 clone 对应的 hook，再挂载到 workInProgress fiber 的 memoizedState 链表上；re-render 的情况下，由于已经创建过了 hooks，会复用已有的 workInProgress fiber 的 memoizedState。
 
 这里正好提到，为什么 hook 不能用在条件语句中，因为如果前后两次渲染的条件判断不一致时，会导致 current fiber 和 workInProgress fiber 的 hooks 链表结点无法对齐。
-
-#### 总结
-
+### 总结
 所以我们总结一下 `renderWithHooks` 这个函数，它所做的事情如下：
 <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ba2098cb979b4676a91b9eeb634101e5~tplv-k3u1fbpfcp-watermark.image?" width="60%">
-
-### hooks 源码
-
+## hooks 源码
 前面 hooks 的执行入口我们都找到了，现在我们看一下常用的一些 hooks 源码。
-
-#### useState & useReducer
-
+### useState & useReducer
 这里会把 useState 和 useReducer 放在一起来说，因为 useState 相当于一个简化版的 useReducer。
-
-##### 用法
-
+#### 用法
 useState 的简单用法如下：
-
 ```ts
 const [count, setCount] = useState(0);
 // 改变 count 的值
 setCount(count++);
 ```
-
 useReducer 简单用法如下：
-
 ```ts
-const [count, dispatch] = useReducer(function reducer(state, action) {
-  switch (action.type) {
-    case 'increment':
-      return count + 1;
-    default:
-      return count;
-  }
-}, 0);
+const [count, dispatch] = useReducer(
+  function reducer(state, action) {
+    switch (action.type) {
+      case 'increment':
+        return count + 1;
+      default:
+        return count;
+    }
+  },
+  0
+);
 // 改变 count 的值
 dispatch({ type: 'increment' });
 ```
-
-##### mountState & mountReducer
-
+#### mountState & mountReducer
 我们先从 useState 开始讲起，mount 阶段，`useState` 对应的源码是 `mountState`。这里面后创建初始的 hook 和更新队列 queue，然后创建 dispatch，最终返回 `[hook.memoizedState, dispatch]`，对应的是我们代码中的 `[count, setCount]`，供我们使用：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -600,9 +536,7 @@ function mountState<S>(
   return [hook.memoizedState, dispatch];
 }
 ```
-
 再来看下 mount 阶段的 `useReducer` 的源码，也就是 `mountReducer`，可以看到和 `mountState` 所做的事情基本时一样的，`mountState` 可以看做是有一个初始 state 的 `mountReducer`：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -633,11 +567,8 @@ function mountReducer<S, I, A>(
   return [hook.memoizedState, dispatch];
 }
 ```
-
-##### dispatchAction
-
+#### dispatchAction
 上面的代码中，其他内容我们前面基本都有讲过，你们应该了解它们的作用，我们着重来看一下 dispatch，它是通过执行 `dispatchAction` 创建的。
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -722,18 +653,13 @@ function dispatchAction<S, A>(
   }
 }
 ```
-
 首先，会创建一个初始的 update 对象，用来记录相关的 hook 信息，并将它添加到 queue 中，这里的 queue 的添加你可以发现它形成了一个循环链表，这样 pending 作为链表的一个尾结点，而 pending.next 就能够获取链表的头结点。这样做的目的是，在 `setCount` 时，我们需要将 update 添加到链表的尾部；而在下面的 `updateReducer` 中，我们需要获取链表的头结点来遍历链表，通过循环链表能够轻松实现我们的需求。
 
 之后，会根据当前所处的阶段是否在 render 阶段发生：
-
 - 如果是 render 阶段发生，那么会触发 re-render 过程，将 `didScheduleRenderPhaseUpdateDuringThisPass` 置为 true。前面 `renderWithHooks` 的代码中我们说了，`didScheduleRenderPhaseUpdateDuringThisPass` 为 true 时会代表 re-render，会重新执行 render 过程，直至其为 false。
 - 如果不是在 render 阶段发生，那么会通过当前的 state 和 action 来判断下次渲染的 state 的值，并与当前 state 的值进行比较，如果两个值一致，则不需要更新，跳过更新过程；如果两个值不一致，调用 `scheduleUpdateOnFiber` 开始调度，触发新一轮更新。
-
-##### updateReducer
-
+#### updateReducer
 update 时，`useState` 和 `useReducer` 就更没什么区别了，`updateState` 就是直接返回了 `updateReducer` 函数，所以我们直接看 `updateReducer` 的源码就可以。
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -743,7 +669,6 @@ function updateState<S>(
   return updateReducer(basicStateReducer, (initialState: any));
 }
 ```
-
 `updateReducer` 中，用 `pending` 来指向本次要触发的 update，然后将本次 hook 要执行的 update 和 current fiber 中之前未完成的 update 全部链接到 `baseQueue`，也就是代表全局的 update。
 
 在 render 阶段，会遍历 update 来计算 state 的值，若某个 update 的优先级低于当前 render 执行的任务的优先级，则跳过此次 update 及未遍历完的 update 的执行，先执行其他的 update。然后再下一次 render 时从跳过的 update 开始继续执行。
@@ -751,7 +676,6 @@ function updateState<S>(
 update 阶段 dispatch 会生成一个新的 update 链接到 hooks 中，并根据之前的 state 和本次 action 去计算新的 state。
 
 `updateReducer` 的源码如下：
-
 ```ts
 function updateReducer<S, I, A>(
   reducer: (S, A) => S,
@@ -876,20 +800,13 @@ function updateReducer<S, I, A>(
   return [hook.memoizedState, dispatch];
 }
 ```
-
-##### 总结
-
+#### 总结
 总结一下 `useState` 和 `useReducer` 的执行过程如下图：
 <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6f1dcf1c1676467291b8c7edf7546d6b~tplv-k3u1fbpfcp-watermark.image?" width="100%">
-
-#### useEffect
-
+### useEffect
 同样，我们也分为 mount 和 update 两种情况来看 useEffect。
-
-##### 用法
-
+#### 用法
 `useEffect` 的使用大家应该都了解，在这里就不赘述了，我们本次的用例如下：
-
 ```ts
 useEffect(() => {
   console.log('update');
@@ -898,30 +815,25 @@ useEffect(() => {
   };
 }, [count]);
 ```
-
-##### mountEffect
-
+#### mountEffect
 mount 阶段 `useEffect` 实际上是调用了 `mountEffect` 方法，进一步通过传递参数调用了 `mountEffectImpl` 这个函数：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
 function mountEffect(
-  create: () => (() => void) | void, // 执行的回调函数
-  deps: Array<mixed> | void | null // 依赖项
+  create: () => (() => void) | void,  // 执行的回调函数
+  deps: Array<mixed> | void | null,  // 依赖项
 ): void {
   // ...
   return mountEffectImpl(
     UpdateEffect | PassiveEffect,
     HookPassive,
     create,
-    deps
+    deps,
   );
 }
 ```
-
-和 mountState 中所做的事情类似，mountEffectImpl 中首先通过 `mountWorkInProgressHook` 创建了 hook 链接到 hooks 链表中，前面提到过 `useEffect` 的 hook 是一个 Effect 类型的对象。然后通过 `pushEffect` 方法创建一个 effect 添加到 hook 的 memoizedState 属性：
-
+和 mountState 中所做的事情类似，mountEffectImpl 中首先通过 `mountWorkInProgressHook` 创建了 hook 链接到 hooks 链表中，前面提到过 `useEffect` 的 hook 是一个 Effect 类型的对象。然后通过 `pushEffect` 方法创建一个effect 添加到hook 的 memoizedState 属性：
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -930,20 +842,17 @@ function mountEffectImpl(fiberFlags, hookFlags, create, deps): void {
   const hook = mountWorkInProgressHook();
   const nextDeps = deps === undefined ? null : deps;
   currentlyRenderingFiber.flags |= fiberFlags;
-  // 创建一个 effect 对象并添加到 hook 的 memoizedState 中
+ // 创建一个 effect 对象并添加到 hook 的 memoizedState 中
   hook.memoizedState = pushEffect(
     HookHasEffect | hookFlags,
     create,
     undefined,
-    nextDeps
+    nextDeps,
   );
 }
 ```
-
-##### pushEffect
-
+#### pushEffect
 `pushEffect` 函数中主要做了两件事，创建 effect 对象，然后将其添加到 fiber 的 updateQueue 链表上：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -979,30 +888,25 @@ function pushEffect(tag, create, destroy, deps) {
   return effect;
 }
 ```
-
-##### updateEffect
-
+#### updateEffect
 update 阶段，`useEffect` 实际上是调用了 `updateEffect` 函数，同样是进一步调用了 `updateEffectImpl` 函数：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
 function updateEffect(
   create: () => (() => void) | void,
-  deps: Array<mixed> | void | null
+  deps: Array<mixed> | void | null,
 ): void {
   // ...
   return updateEffectImpl(
     UpdateEffect | PassiveEffect,
     HookPassive,
     create,
-    deps
+    deps,
   );
 }
 ```
-
 所以我们接着往下看 `updateEffectImpl` 函数做了什么，它从 `updateWorkInProgressHook` 取出对应的 hook，然后看上一轮 render 中是否有 hook 存在，若存在且上一轮 render 和本轮的依赖项没发生变化，说明副作用不需要执行，创建一个 effect 对象添加到 updateQueue 链表后直接返回；若两次的依赖项发生了变化，向 fiber 添加 flags 副作用标签，待 commit 时更新，然后再创建一个 effect 对象添加到 updateQueue 链表：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -1036,20 +940,15 @@ function updateEffectImpl(fiberFlags, hookFlags, create, deps): void {
     HookHasEffect | hookFlags,
     create,
     destroy,
-    nextDeps
+    nextDeps,
   );
 }
 ```
-
-##### 总结
-
+#### 总结
 总结一下 `useEffect` 的大体流程如下：
 <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/15ac0841f23949d3a516516c6e150aa7~tplv-k3u1fbpfcp-watermark.image?" width="100%" />
-
-#### useRef
-
+### useRef
 `useRef` 的代码十分的简单了，我们直接将 mount 阶段和 update 阶段的放到一起来看：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -1066,21 +965,15 @@ function updateRef<T>(initialValue: T): {|current: T|} {
   return hook.memoizedState;
 }
 ```
-
 mount 阶段，调用 `mountRef` 函数，通过 `mountWorkInProgressHook` 创建一个 hook 并添加到 hooks 链表上，`hook.memoizedState` 上存储的是 `{current: initialValue}` 这个 ref 对象。
 
 update 阶段，调用 `updateRef` 函数，通过 `updateWorkInProgressHook` 方法直接取出 `hook.memoizedState`。
 
 可以看到 `hook.memoizedState` 指向的是一个对象的引用，这就解释了我们可以直接通过 `ref.current` 去改变和获取最新的值，不必进行任何依赖注入。
-
-#### useCallback & useMemo
-
+### useCallback & useMemo
 `useCallback` 和 `useMemo` 也是一样，源码结构上十分相似，所以也放在一起来讲。
-
-##### 用法
-
+#### 用法
 基础用法如下：
-
 ```ts
 // 第一个参数是 “创建” 函数，第二个参数是依赖项数组
 // “创建” 函数会根据依赖项数组返回一个值，并且仅会在某个依赖项改变时才重新计算
@@ -1088,17 +981,12 @@ const value = useMemo(() => add(a, b), [a, b]);
 
 // 第一个参数是回调函数，第二个参数是依赖项数组
 // 依赖项改变时回调函数会进行更新
-const callback = useCallback(() => {
-  add(a, b);
-}, [a, b]);
+const callback = useCallback(() => { add(a, b) }, [a, b]);
 ```
-
-##### mount 阶段
-
+#### mount 阶段
 mount 时，分别调用了 `mountCallback` 和 `mountMemo` 函数，两者都通过 `mountWorkInProgressHook` 方法创建 hook 添加到了 hooks 链表中。不同的是，`mountCallback` 的 memoizedState 是 `[callback, nextDeps]`，并且返回的是其第一个参数；`mountMemo` 的 memoizedState 是 `[nextValue, nextDeps]`，返回的也是 `nextValue` 也就是其第一个参数的执行结果。
 
 所以看上去 `useMemo` 就是比 `useCallback` 多了一步第一个参数的执行过程。
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -1112,7 +1000,7 @@ function mountCallback<T>(callback: T, deps: Array<mixed> | void | null): T {
 
 function mountMemo<T>(
   nextCreate: () => T,
-  deps: Array<mixed> | void | null
+  deps: Array<mixed> | void | null,
 ): T {
   // 创建 hook 添加到链表中
   const hook = mountWorkInProgressHook();
@@ -1122,11 +1010,8 @@ function mountMemo<T>(
   return nextValue;
 }
 ```
-
-##### update 阶段
-
+#### update 阶段
 update 时，分别调用了 `updateCallback` 和 `updateMemo` 函数，它们都通过 `updateWorkInProgressHook` 取出对应的 hook，若依赖项未发生改变，则取上一轮的 callback 或者 value 返回；若依赖项发生改变，则重新赋值 hook.memoizedState 并返回新的 callback 或新计算的 value：
-
 ```ts
 // packages/react-reconciler/src/ReactFiberHooks.old.js
 
@@ -1151,7 +1036,7 @@ function updateCallback<T>(callback: T, deps: Array<mixed> | void | null): T {
 
 function updateMemo<T>(
   nextCreate: () => T,
-  deps: Array<mixed> | void | null
+  deps: Array<mixed> | void | null,
 ): T {
   // 获取对应 hook
   const hook = updateWorkInProgressHook();
@@ -1172,7 +1057,5 @@ function updateMemo<T>(
   return nextValue;
 }
 ```
-
-### 结语
-
+## 结语
 本章讲解了 react hooks 的源码，理解了 hooks 的设计思想和工作过程。其他 hook 平时用的比较少，就不在这里展开讲了，但通过上面几个 hook 的源码讲解，其他 hook 看源码你应该也能看得懂。

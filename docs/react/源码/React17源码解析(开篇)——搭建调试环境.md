@@ -6,7 +6,7 @@ tag: ['react']
 
 通过源码的学习，你可以提升项目中排查 bug 的能力、更好的理解 react 的工作过程和工作模式、提升数据结构和算法设计的能力，以及最重要的：提升面试竞争力。
 
-# 系列目录
+## 系列目录
 
 本系列的源码解析的 react 版本是 [v17.0.2](https://github.com/facebook/react/tree/17.0.2)，将从 react 应用的入口开始讲解，涉及到一个较为完整的 react 依赖的绝大部分的主要功能和核心，大体的内容纲要如下：
 
@@ -17,15 +17,15 @@ tag: ['react']
 - [全面理解 diff 算法](https://juejin.cn/post/7020595059095666724)
 - [commit 阶段](https://juejin.cn/post/7022816775188250660)
 - [一文搞懂 hooks 原理](https://juejin.cn/post/7023568411963686920)
-- 实现 mini react
+- [实现 mini react](https://juejin.cn/post/7030673003583111176)
 
 <b>由于上面的章节并未完结，后续实际写的过程中可能略有调整，本篇章会随时更新，感兴趣的看官老爷建议收藏一下本章作为目录导航。</b>
 
-# 搭建 react 源码调试环境
+## 搭建 react 源码调试环境
 
 本系列章节除了源码的解析之外，也希望大家能够自己学会如何阅读源码，既然想要阅读源码，那么必然少不了对源码的调试，下面会讲解如何搭建一个 react 源码的调试环境。
 
-## 创建项目
+### 创建项目
 
 首先通过官方脚手架 create-react-app 创建一个 react 项目，在终端执行以下命令：
 
@@ -33,7 +33,7 @@ tag: ['react']
 npx create-react-app debug-react
 ```
 
-## 暴露 webpack 配置
+### 暴露 webpack 配置
 
 我们后续想要对通过直接引入 react 源码替代 node_modules 中的 react 包，需要修改 webpack，在 debug-react 目录下执行以下命令暴露 webpack 配置：
 
@@ -48,7 +48,7 @@ yarn eject
 <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6bfc59813fe34ac78aad5e391ff3da48~tplv-k3u1fbpfcp-watermark.image" height="400" />
 </div>
 
-## 引入 react 源码及修改 webpack
+### 引入 react 源码及修改 webpack
 
 由于 node_modules 中的 react 包是打包好之后的文件，许多代码掺杂在一个文件中，不便于我们对源码进行调试。因此在 debug-react 的 src 目录下引入 react 的源码：
 
@@ -88,7 +88,7 @@ module.exports = {
 }
 ```
 
-## 修改环境变量
+### 修改环境变量
 
 我们将 `__DEV__` 等环境变量默认启用，便于开发调试，修改 `config/env.js`：
 
@@ -125,11 +125,11 @@ function getClientEnvironment(publicUrl) {
 }
 ```
 
-## 解决一系列报错
+### 解决一系列报错
 
 上面的环境配置好之后，通过 `yarn start` 启动会出现一系列的报错问题，因为 react 中某些遍历是在打包时根据环境注入生成的，我们现在要直接调试源码，不进行 react 的打包，所以要解决这些报错。下面直接讲问题解决了。
 
-### 添加 ReactFiberHostConfig 引用
+#### 添加 ReactFiberHostConfig 引用
 
 <b>如下报错</b>
 
@@ -157,7 +157,7 @@ Attempted import error: 'afterActiveInstanceBlur' is not exported from './ReactF
 + import ReactSharedInternals from '../react/src/ReactSharedInternals';
 ```
 
-### 修改 react 引用方式
+#### 修改 react 引用方式
 
 <b>如下报错</b>
 
@@ -176,7 +176,7 @@ Attempted import error: 'react' does not contain a default export (imported actF
 + import * as ReactDOM from 'react-dom';
 ```
 
-### 修改 inveriant
+#### 修改 inveriant
 
 <b>如下报错</b>
 
@@ -200,7 +200,7 @@ export default function invariant(condition, format, a, b, c, d, e, f) {
 }
 ```
 
-### 解决 eslint 报错
+#### 解决 eslint 报错
 
 还剩下一堆有关 eslint 的报错，诸如：
 
@@ -246,7 +246,7 @@ module.exports = {
 }
 ```
 
-# 总结
+## 总结
 
 至此，我们的调试环境就搭建完成了，可以在 react 源码中通过 `debugger` 打断点或者 `console.log()` 输出日志进行愉快地调试了！
 

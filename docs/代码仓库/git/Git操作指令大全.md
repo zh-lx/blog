@@ -7,7 +7,8 @@
 - 本地仓库：通过 `git commit` 指令，会将暂存区变动的代码提交到本地仓库中，本地仓库位于你的电脑上
 - 远程仓库：远端用来托管代码的仓库，通过 `git push` 指令，会将本地仓库的代码推送到远程仓库中
 
-![git工作区域.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e8453878f8d140cd8f764d79ad59bc3b~tplv-k3u1fbpfcp-watermark.image?)
+![git工作区域 (1)](https://user-images.githubusercontent.com/73059627/147815799-95b9f49e-ece3-4d34-ba43-235059450cc4.png)
+
 ## 初始配置
 ### 配置用户信息
 

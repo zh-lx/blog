@@ -1422,11 +1422,6 @@ dot-case@^3.0.4:
     no-case "^3.0.4"
     tslib "^2.0.3"
 
-easy-icon@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/easy-icon/-/easy-icon-1.1.0.tgz#3f28680ebb27bf244bf88e0ac64cfe1702205f08"
-  integrity sha512-ATzAnuPJp6Gbm9/BYKQx8tUnpmpsdJbAR8nUXfQSWGJtx82snNUV+MGMwVsqRcdS0+z5atebICPnqKGACIW08g==
-
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"

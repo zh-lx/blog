@@ -1,4 +1,0 @@
----
-layout: 'CategoriesPage'
-permalink: '/categories/'
----

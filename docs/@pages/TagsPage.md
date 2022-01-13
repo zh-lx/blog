@@ -1,4 +1,0 @@
----
-layout: 'TagsPage'
-permalink: '/tags/'
----

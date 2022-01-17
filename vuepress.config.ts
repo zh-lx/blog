@@ -8,4 +8,9 @@ module.exports = {
       level: [2, 3, 4, 5, 6],
     },
   },
+  define: {
+    HOME_INFO: {
+      tes: 11,
+    },
+  },
 };

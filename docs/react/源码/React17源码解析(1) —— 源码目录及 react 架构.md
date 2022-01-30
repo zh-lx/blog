@@ -1,5 +1,8 @@
 ---
+desc: '要学习 react 源码，首先要对 react 的源码和整个架构有个大体的了解，这样学起来会事半功倍，本章将介绍一下 react 的源码和架构。'
+cover: 'https://image-1300099782.cos.ap-beijing.myqcloud.com/blog%2Freact-code.png'
 tag: ['react']
+time: '2021-09-22'
 ---
 
 欢迎大家一起交流学习 react 源码，本系列导航请见：[React17 源码解析(开篇) —— 搭建 react 源码调试环境](https://juejin.cn/post/7014775797596553230/)
@@ -7,6 +10,7 @@ tag: ['react']
 <hr />
 
 要学习 react 源码，首先要对 react 的源码和整个架构有个大体的了解，这样学起来会事半功倍。本章将介绍一下 react 的源码和架构。
+
 ## 源码目录
 
 react 的源码目录如下，主要有三个文件夹：

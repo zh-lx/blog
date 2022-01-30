@@ -1,5 +1,8 @@
 ---
+desc: '从这一章开始，我们正式开始 react 源码的学习，本章包括react17之前和之后 jsx 编译的不同、React.createElement 源码、React.Component源码。'
+cover: 'https://image-1300099782.cos.ap-beijing.myqcloud.com/blog%2Freact-code.png'
 tag: ['react']
+time: '2021-09-30'
 ---
 
 欢迎大家一起交流学习 react 源码，本系列目录导航请见：[React17 源码解析(开篇) —— 搭建 react 源码调试环境](https://juejin.cn/post/7014775797596553230/)

@@ -1,5 +1,8 @@
 ---
+desc: '本章将学习 react render 阶段源码，包括：更新任务的触发和创建、reconciler 过程同步和异步遍历及执行任务、scheduler 是如何实现帧空闲时间调度任务以及中断任务的。'
+cover: 'https://image-1300099782.cos.ap-beijing.myqcloud.com/blog%2Freact-code.png'
 tag: ['react']
+time: '2021-10-09'
 ---
 
 本章将讲解 react 的核心阶段之一 —— render 阶段，我们将探究以下部分内容的源码：

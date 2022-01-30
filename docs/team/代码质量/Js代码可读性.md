@@ -1,5 +1,7 @@
 ---
-tag: ['代码规范']
+desc: '代码可读性的魅力也是这样，高可读性的代码，让别人抑郁理解，能够大量减少后期的维护时间。今天总结了 10 条常用的提高代码可读性的小方法，望大家不吝赐教。'
+tag: ['代码规范', 'js']
+time: '2021-05-18'
 ---
 
 # 10 种方法，提高你的代码可读性！
@@ -125,13 +127,13 @@ function getTeacherInfo(teacherName = 'Teacher.Cang') {
 
 ```javascript
 // bad  需要花时间去看代码理解这个回调函数是做什么的
-<input type='button' value='提交' onClick='handleClick' />;
+<input type="button" value="提交" onClick="handleClick" />;
 function handleClick() {
   // do...
 }
 
 // good 一眼就能理解这个回调函数是提交表单
-<input type='button' value='提交' onClick='handleSubmitForm' />;
+<input type="button" value="提交" onClick="handleSubmitForm" />;
 function handleSubmitForm() {
   // do...
 }

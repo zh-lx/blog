@@ -1,5 +1,8 @@
 ---
+desc: '本系列的源码解析的 react 版本是 v17.0.2，将从 react 应用的入口开始讲解，涉及到一个较为完整的 react 依赖的绝大部分的主要功能和核心。'
+cover: 'https://image-1300099782.cos.ap-beijing.myqcloud.com/blog%2Freact-code.png'
 tag: ['react']
+time: '2021-09-08'
 ---
 
 作为前端最优秀的开源框架之一，react 值得每一个前端开发者学习。今年花了很长的一段时间，反复理解品读了 react 的源码，感觉收获颇丰，趁着国庆假期打算<b>开始</b>写一系列 react v17 源码解析的文章和大家一起讨论学习。

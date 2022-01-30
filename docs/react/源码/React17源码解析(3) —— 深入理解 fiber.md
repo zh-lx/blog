@@ -1,5 +1,8 @@
 ---
+desc: '本章将介绍以下内容： 为什么需要 fiber、fiber 节点结构中的属性、fiber 树是如何构建与更新的。'
+cover: 'https://image-1300099782.cos.ap-beijing.myqcloud.com/blog%2Freact-code.png'
 tag: ['react']
+time: '2021-10-02'
 ---
 
 react16 版本之后引入了 fiber，整个架构层面的 调度、协调、diff 算法以及渲染等都与 fiber 密切相关。所以为了更好地讲解后面的内容，需要对 fiber 有个比较清晰的认知。本章将介绍以下内容：

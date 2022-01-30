@@ -1,5 +1,8 @@
 ---
-tag: ['webpack', '工程化']
+desc: '本文将介绍 SourceMap 的作用、简单工作原理以及 webpack 中不同 devtool 所构建的 SourceMap 有何区别，以及如何选择最合适的 devtool'
+cover: 'https://img2.baidu.com/it/u=4161682823,2906342423&fm=253&fmt=auto&app=138&f=PNG?w=500&h=333'
+tag: ['webpack']
+time: '2021-05-07'
 ---
 
 # 一文搞懂 SourceMap 以及 webpack devtool

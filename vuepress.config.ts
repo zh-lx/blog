@@ -2,6 +2,7 @@ import * as path from 'path';
 module.exports = {
   title: '周立翔的博客',
   description: '前端及全栈学习心得与总结',
+  themeConfig: {},
   theme: path.resolve(__dirname, './vuepress-theme-writing'),
   markdown: {
     extractHeaders: {

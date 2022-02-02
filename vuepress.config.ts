@@ -14,6 +14,7 @@ module.exports = {
     SITE_INFO: {
       title: '十里香飘',
       description: '欲望以提高热忱，毅力以磨平高山',
+      // type: 'docs',
     },
     AUTHOR_INFO: {
       name: '周立翔',
@@ -29,5 +30,19 @@ module.exports = {
       // csdn: '',
       // zhihu: 'https://www.zhihu.com/people/zhou-li-xiang-66-91',
     },
+    // HOME_ITEMS: [
+    //   {
+    //     title: 'Out of the box',
+    //     text: 'Elegant default configrations and convention routing assist developers to get started as simple as possible, that focus all attentions on developing libraries & writting docs',
+    //   },
+    //   {
+    //     title: 'For developing libraries',
+    //     text: 'Rich Markdown extensions are not limited to rendering component demos, making component documents not only easy to write and manage, but also beautiful and easy to use',
+    //   },
+    //   {
+    //     title: 'Theme system',
+    //     text: 'Progressive custom theme capabilities, ranging from expanding your own Markdown tags to customizing complete theme packages, are up to you',
+    //   },
+    // ],
   },
 };

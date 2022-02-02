@@ -15,7 +15,6 @@
   height: 68px;
   margin-top: 20px;
   border-top: var(--common-border);
-  background-color: rgba(255, 255, 255, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;

@@ -10,6 +10,11 @@ module.exports = {
       HomeFooter: path.resolve(__dirname, './home-footer/index.vue'),
     },
   },
+  markdown: {
+    extractHeaders: {
+      level: [1, 2, 3, 4, 5, 6],
+    },
+  },
   define: {
     SITE_INFO: {
       title: '十里香飘',

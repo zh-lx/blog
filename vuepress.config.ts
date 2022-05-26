@@ -1,7 +1,8 @@
 import * as path from 'path';
 module.exports = {
-  title: '周立翔的博客',
-  description: '前端及全栈学习心得与总结',
+  title: '周立翔的小窝',
+  description:
+    '欢迎来到周立翔的小窝，这里记录我个人学习过程中的感悟和小结，与诸君共勉',
   theme: path.resolve(__dirname, './vuepress-theme-writing'),
   themeConfig: {
     logo: '/images/logo.png',
@@ -17,8 +18,9 @@ module.exports = {
   },
   define: {
     SITE_INFO: {
-      title: '十里香飘',
-      description: '欲望以提高热忱，毅力以磨平高山',
+      title: '周立翔的小窝',
+      description:
+        '欢迎来到周立翔的小窝，这里记录我个人学习过程中的感悟和小结，与诸君共勉',
       // type: 'docs',
     },
     AUTHOR_INFO: {

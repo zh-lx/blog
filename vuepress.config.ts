@@ -1,7 +1,8 @@
 import * as path from 'path';
 module.exports = {
-  title: '十里香飘',
-  description: '这里记录我个人学习过程中的感悟和小结，与诸君共勉',
+  title: '前端技术分享',
+  description:
+    '欢迎来到周立翔的小窝，这里记录我个人学习过程中的感悟和小结，与诸君共勉',
   theme: path.resolve(__dirname, './vuepress-theme-writing'),
   themeConfig: {
     logo: '/images/logo.png',

@@ -12,7 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["vuepress-theme-writing/client/*"]
+      "@/*": ["vuepress-theme-writing/src/client/*"]
     }
   }
 }

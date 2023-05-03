@@ -14,19 +14,19 @@
   width: 100vw;
   height: 68px;
   margin-top: 20px;
-  border-top: var(--color-border-2);
+  border-top: 1px solid var(--wc-border-light);
   display: flex;
   justify-content: center;
   align-items: center;
   .site-code {
-    color: var(--color-text-8);
+    color: var(--wc-text-primary);
     &:hover {
-      color: var(--bule-6);
+      color: var(--wc-text-brand);
     }
   }
   .copy-right {
-    color: var(--color-text-8);
-    border-left: var(--color-border-2);
+    color: var(--wc-text-primary);
+    border-left: 1px solid var(--wc-border-primary);
     padding-left: 12px;
     margin-left: 12px;
   }

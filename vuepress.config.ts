@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { webpackBundler } from '@vuepress/bundler-webpack';
 import { defineUserConfig } from '@vuepress/cli';
-import WriteTheme from './vuepress-theme-writing/src/node';
+import WriteTheme from './vuepress-theme-writing/src/node/index';
 
 export default defineUserConfig({
   title: '前端技术分享',

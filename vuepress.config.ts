@@ -15,6 +15,7 @@ export default defineUserConfig({
   alias: {
     HomeFooter: path.resolve(__dirname, './home-footer/index.vue'),
   },
+  bundler: webpackBundler({}),
   define: {
     $Site: {
       title: '周立翔的小窝',

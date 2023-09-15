@@ -1,6 +1,6 @@
 ---
 desc: '本文总结了日常工作中常用的 git 指令，涵盖了绝大部分的使用场景，让你能够轻松应对各种 git 协作流程。'
-cover: 'https://image-1300099782.cos.ap-beijing.myqcloud.com/git%E6%8C%87%E4%BB%A4%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.png'
+cover: 'https://github.com/zh-lx/blog/assets/73059627/789ee5e2-6e23-4ab5-9e1c-37b2ebaef68d'
 tag: ['git']
 time: '2021-12-31'
 ---

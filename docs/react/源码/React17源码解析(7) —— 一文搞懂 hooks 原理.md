@@ -1,6 +1,6 @@
 ---
 desc: '本章将讲解 react hooks ，理解 hooks 的设计思想和工作过程，以及探究常用 hooks 的源码。'
-cover: 'https://image-1300099782.cos.ap-beijing.myqcloud.com/blog%2Freact-code.png'
+cover: 'https://github.com/zh-lx/blog/assets/73059627/aa66652c-e6b2-40b4-b763-c9b1616b68a4'
 tag: ['react']
 time: '2021-10-21'
 ---

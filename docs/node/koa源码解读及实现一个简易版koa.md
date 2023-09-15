@@ -1,6 +1,6 @@
 ---
 desc: '本文将细节分析 koa 的源码，并基于其原理实现一个简易版的 koa。'
-cover: 'https://image-1300099782.cos.ap-beijing.myqcloud.com/blog%2Fkoa.png'
+cover: 'https://github.com/zh-lx/blog/assets/73059627/a15b7251-115f-43ef-99f2-247b0b2f5c0d'
 tag: ['node', 'koa']
 time: '2021-05-27'
 ---

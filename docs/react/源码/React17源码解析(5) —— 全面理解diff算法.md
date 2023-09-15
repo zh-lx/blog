@@ -1,6 +1,6 @@
 ---
 desc: 'react 源码解析，本章节将结合源码解析 diff 算法，包括如下内容：react diff 算法的介绍、diff 策略、diff 源码解析。'
-cover: 'https://image-1300099782.cos.ap-beijing.myqcloud.com/blog%2Freact-code.png'
+cover: 'https://github.com/zh-lx/blog/assets/73059627/aa66652c-e6b2-40b4-b763-c9b1616b68a4'
 tag: ['react']
 time: '2021-10-15'
 ---

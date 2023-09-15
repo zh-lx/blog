@@ -1,6 +1,6 @@
 ---
 desc: '本章基于 react17 版本实现一个 mini react，涵盖了 react 源码所有的知识点例如 fiber 架构、render 和 commit 阶段、diff 算法、hook、类组件、函数组。'
-cover: 'https://image-1300099782.cos.ap-beijing.myqcloud.com/blog%2Freact-code.png'
+cover: 'https://github.com/zh-lx/blog/assets/73059627/aa66652c-e6b2-40b4-b763-c9b1616b68a4'
 tag: ['react']
 time: '2021-10-27'
 ---

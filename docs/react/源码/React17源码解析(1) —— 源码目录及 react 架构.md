@@ -1,6 +1,6 @@
 ---
 desc: '要学习 react 源码，首先要对 react 的源码和整个架构有个大体的了解，这样学起来会事半功倍，本章将介绍一下 react 的源码和架构。'
-cover: 'https://image-1300099782.cos.ap-beijing.myqcloud.com/blog%2Freact-code.png'
+cover: 'https://github.com/zh-lx/blog/assets/73059627/aa66652c-e6b2-40b4-b763-c9b1616b68a4'
 tag: ['react']
 time: '2021-09-22'
 ---

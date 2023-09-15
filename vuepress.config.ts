@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { webpackBundler } from '@vuepress/bundler-webpack';
 import { defineUserConfig } from '@vuepress/cli';
-import WriteTheme from './vuepress-theme-writing/src/node';
+import WriteTheme from './vuepress-theme-writing/src/node/index';
 
 export default defineUserConfig({
   title: '前端技术分享',
@@ -15,6 +15,7 @@ export default defineUserConfig({
   alias: {
     HomeFooter: path.resolve(__dirname, './home-footer/index.vue'),
   },
+  bundler: webpackBundler({}),
   define: {
     $Site: {
       title: '周立翔的小窝',

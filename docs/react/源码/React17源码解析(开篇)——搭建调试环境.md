@@ -1,6 +1,6 @@
 ---
 desc: '本系列的源码解析的 react 版本是 v17.0.2，将从 react 应用的入口开始讲解，涉及到一个较为完整的 react 依赖的绝大部分的主要功能和核心。'
-cover: 'https://image-1300099782.cos.ap-beijing.myqcloud.com/blog%2Freact-code.png'
+cover: 'https://github.com/zh-lx/blog/assets/73059627/aa66652c-e6b2-40b4-b763-c9b1616b68a4'
 tag: ['react']
 time: '2021-09-08'
 ---

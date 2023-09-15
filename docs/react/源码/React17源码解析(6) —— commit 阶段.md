@@ -1,6 +1,6 @@
 ---
 desc: '前两章讲到了，react 在 render 阶段的 `completeUnitWork` 执行完毕后，就执行 `commitRoot` 进入到了 commit 阶段，本章将讲解 commit 阶段执行。'
-cover: 'https://image-1300099782.cos.ap-beijing.myqcloud.com/blog%2Freact-code.png'
+cover: 'https://github.com/zh-lx/blog/assets/73059627/aa66652c-e6b2-40b4-b763-c9b1616b68a4'
 tag: ['react']
 time: '2021-10-19'
 ---
